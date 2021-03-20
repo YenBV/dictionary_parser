@@ -11,54 +11,59 @@ import java.util.regex.Pattern;
 
 @Service
 public class DictionaryParserImpl implements DictionaryParser {
-    @Override
-    public void parse(String content) {
-        Dictionary dictionary = new Dictionary();
-        List<String> wordDefinitions = wordDefinitions(content);
 
-        for (String wordDefinition : wordDefinitions) {
+    private final WordParser wordParser;
 
-            Word.Builder word = Word.newBuilder();
-
-            if (wordDefinition.startsWith("! ")) {
-                wordDefinition = StringUtils.replace(wordDefinition, "! ", "");
-                word.setImportant(true);
-            }
-            String[] wordToDef = wordDefinition.split(",", 2);
-            word.setWord(wordToDef[0]);
-            String all = wordToDef[1];
-            String[] typeToDefinition = all.split(":", 2);
-            word.setType(typeToDefinition[0]);
-            word.setDefinition(typeToDefinition[1]);
-            dictionary.add(word.build());
-        }
-
-
-        for (Word word : dictionary.getWords()) {
-            System.out.println(word);
-        }
+    public DictionaryParserImpl(WordParser wordParser) {
+        this.wordParser = wordParser;
     }
 
-    private List<String> wordDefinitions(String content) {
-        List<String> result = new ArrayList<>();
+    @Override
+    public Dictionary parse(String content) {
+        Dictionary dictionary = new Dictionary();
+        List<MultiLanguageWordDefinition> dictionaryDefinition = dictionaryDefinition(content);
+        for (MultiLanguageWordDefinition wordDefinitions : dictionaryDefinition) {
+            List<Word> words = wordDefinitions.parseWords(wordParser);
+            for (Word word : words) {
+                word.addMeanings(multiLanguageWordsBesidesCurrent(words, word));
+                dictionary.add(word);
+            }
+        }
+        return dictionary;
+    }
+
+    private List<Word> multiLanguageWordsBesidesCurrent(List<Word> words, Word current) {
+        ArrayList<Word> meanings = new ArrayList<>(words);
+        meanings.remove(current);
+        return meanings;
+    }
+
+    private List<MultiLanguageWordDefinition> dictionaryDefinition(String content) {
+        List<MultiLanguageWordDefinition> result = new ArrayList<>();
+        List<String> wordDefinitions = new ArrayList<>();
+        StringBuilder wordDefBuilder = new StringBuilder();
 
         String[] lines = content.trim().split("\n");
-        StringBuilder sb = new StringBuilder();
         for (String line : lines) {
             String pureLine = line.trim();
             if (Pattern.compile("⁕([⁕ ]+)⁕").matcher(pureLine).matches()) {
+                if (!wordDefinitions.isEmpty()) {
+                    result.add(new MultiLanguageWordDefinition(wordDefinitions));
+                    wordDefinitions = new ArrayList<>();
+                }
                 continue;
             }
             if (Pattern.compile("^(! )?(\\S+), (-?)([а-я]|[a-z]){1,4}(, [а-я]|[a-z])?(.*):$").matcher(pureLine).matches()) {
-                String tr = sb.toString();
-                if (StringUtils.isNotBlank(tr)) {
-                    result.add(tr);
+                String wordDef = wordDefBuilder.toString();
+                if (StringUtils.isNotBlank(wordDef)) {
+                    wordDefinitions.add(wordDef);
                 }
-                sb = new StringBuilder();
+                wordDefBuilder = new StringBuilder();
             }
-            sb.append(pureLine);
+            wordDefBuilder.append(pureLine);
         }
-        result.add(sb.toString());
+        wordDefinitions.add(wordDefBuilder.toString());
+        result.add(new MultiLanguageWordDefinition(wordDefinitions));
         return result;
     }
 }

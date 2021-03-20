@@ -1,6 +1,8 @@
 package com.app.dictionary.service;
 
+import com.app.dictionary.model.Dictionary;
+
 public interface DictionaryParser {
 
-    void parse(String content);
+    Dictionary parse(String content);
 }

@@ -1,17 +1,24 @@
 package com.app.dictionary.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Word {
 
     private final String word;
     private final String type;
     private final String definition;
     private final boolean important;
+    private final List<Word> meanings;
+    //TODO:2021-03-20:yen: proposal.
+    private String language;
 
     private Word(Builder builder) {
         this.word = builder.word;
         this.type = builder.type;
         this.definition = builder.definition;
         this.important = builder.important;
+        this.meanings = builder.meanings == null ? new ArrayList<>() : builder.meanings;
     }
 
     public static Builder newBuilder() {
@@ -23,6 +30,7 @@ public class Word {
         private String type;
         private String definition;
         private boolean important;
+        private List<Word> meanings;
 
         public Builder setWord(String word) {
             this.word = word;
@@ -44,6 +52,10 @@ public class Word {
             return this;
         }
 
+        public void setMeanings(List<Word> meanings) {
+            this.meanings = meanings;
+        }
+
         public Word build() {
             return new Word(this);
         }
@@ -63,6 +75,20 @@ public class Word {
 
     public boolean isImportant() {
         return important;
+    }
+
+    public List<Word> getMeanings() {
+        return meanings;
+    }
+
+    public List<Word> addMeaning(Word word) {
+        meanings.add(word);
+        return meanings;
+    }
+
+    public List<Word> addMeanings(List<Word> words) {
+        meanings.addAll(words);
+        return meanings;
     }
 
     @Override

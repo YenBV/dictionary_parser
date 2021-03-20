@@ -26,15 +26,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'commons-io:commons-io:2.8.0'
-    // https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
     implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.23'
-
-    // https://mvnrepository.com/artifact/org.apache.commons/commons-text
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
-// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
-
-
+    implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+    implementation group: 'com.google.guava', name: 'guava-collections', version: 'r03'
 }
 
 test {
