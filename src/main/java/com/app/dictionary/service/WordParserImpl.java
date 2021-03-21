@@ -7,6 +7,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class WordParserImpl implements WordParser {
 
+    private final WordDefinitionsParser wordDefinitionsParser;
+
+    public WordParserImpl(WordDefinitionsParser wordDefinitionsParser) {
+        this.wordDefinitionsParser = wordDefinitionsParser;
+    }
+
     @Override
     public Word parse(String wordDefinition) {
         Word.Builder word = Word.newBuilder();
@@ -20,7 +26,7 @@ public class WordParserImpl implements WordParser {
         String def = wordToDef[1];
         String[] typeToDefinition = def.split(":", 2);
         word.setType(typeToDefinition[0]);
-        word.setDefinition(typeToDefinition[1]);
+        word.setDefinitions(wordDefinitionsParser.parse(typeToDefinition[1]));
         return word.build();
     }
 }

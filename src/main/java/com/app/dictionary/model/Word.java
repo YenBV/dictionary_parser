@@ -6,8 +6,9 @@ import java.util.List;
 public class Word {
 
     private final String word;
+    //TODO:2021-03-21:yen: parse this one.
     private final String type;
-    private final String definition;
+    private final List<WordDefinition> definitions;
     private final boolean important;
     private final List<Word> meanings;
     //TODO:2021-03-20:yen: proposal.
@@ -16,7 +17,7 @@ public class Word {
     private Word(Builder builder) {
         this.word = builder.word;
         this.type = builder.type;
-        this.definition = builder.definition;
+        this.definitions = builder.definitions;
         this.important = builder.important;
         this.meanings = builder.meanings == null ? new ArrayList<>() : builder.meanings;
     }
@@ -28,7 +29,7 @@ public class Word {
     public static final class Builder {
         private String word;
         private String type;
-        private String definition;
+        private List<WordDefinition> definitions;
         private boolean important;
         private List<Word> meanings;
 
@@ -42,8 +43,8 @@ public class Word {
             return this;
         }
 
-        public Builder setDefinition(String definition) {
-            this.definition = definition;
+        public Builder setDefinitions(List<WordDefinition> definitions) {
+            this.definitions = definitions;
             return this;
         }
 
@@ -69,8 +70,8 @@ public class Word {
         return type;
     }
 
-    public String getDefinition() {
-        return definition;
+    public List<WordDefinition> getDefinitions() {
+        return definitions;
     }
 
     public boolean isImportant() {
@@ -96,7 +97,7 @@ public class Word {
         return "Word{" +
                 "word='" + word + '\'' +
                 ", type='" + type + '\'' +
-                ", definition='" + definition + '\'' +
+                ", definition='" + definitions + '\'' +
                 ", important=" + important +
                 '}';
     }
