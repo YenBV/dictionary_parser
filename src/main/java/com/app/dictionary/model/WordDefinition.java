@@ -2,12 +2,27 @@ package com.app.dictionary.model;
 
 import org.springframework.lang.Nullable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "word_definition")
 public class WordDefinition {
 
-    private final String definition;
+    @Id
+    private long id;
+
+    @Column(name = "definition", nullable = false)
+    private String definition;
 
     @Nullable
-    private final String example;
+    @Column(name = "example")
+    private String example;
+
+    public WordDefinition() {
+    }
 
     public WordDefinition(String definition) {
         this(definition, null);

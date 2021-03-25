@@ -1,25 +1,42 @@
 package com.app.dictionary.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Word {
 
-    private final String word;
-    //TODO:2021-03-21:yen: parse this one.
-    private final String type;
-    private final List<WordDefinition> definitions;
-    private final boolean important;
-    private final List<Word> meanings;
-    //TODO:2021-03-20:yen: proposal.
-    private String language;
+    @Id
+    private long id;
+
+    @Column(name = "word")
+    private String word;
+
+    @Column(name = "type")
+    private String type;
+
+    @OneToMany()
+    @Column(name = "definitions")
+    private List<WordDefinition> definitions;
+
+    @Column(name = "important")
+    private boolean important;
+
+    public Word() {
+    }
 
     private Word(Builder builder) {
         this.word = builder.word;
         this.type = builder.type;
         this.definitions = builder.definitions;
         this.important = builder.important;
-        this.meanings = builder.meanings == null ? new ArrayList<>() : builder.meanings;
     }
 
     public static Builder newBuilder() {
@@ -31,7 +48,6 @@ public class Word {
         private String type;
         private List<WordDefinition> definitions;
         private boolean important;
-        private List<Word> meanings;
 
         public Builder setWord(String word) {
             this.word = word;
@@ -53,10 +69,6 @@ public class Word {
             return this;
         }
 
-        public void setMeanings(List<Word> meanings) {
-            this.meanings = meanings;
-        }
-
         public Word build() {
             return new Word(this);
         }
@@ -76,20 +88,6 @@ public class Word {
 
     public boolean isImportant() {
         return important;
-    }
-
-    public List<Word> getMeanings() {
-        return meanings;
-    }
-
-    public List<Word> addMeaning(Word word) {
-        meanings.add(word);
-        return meanings;
-    }
-
-    public List<Word> addMeanings(List<Word> words) {
-        meanings.addAll(words);
-        return meanings;
     }
 
     @Override

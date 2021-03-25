@@ -1,7 +1,9 @@
 package com.app.dictionary.service;
 
 import com.app.dictionary.model.Dictionary;
+import com.app.dictionary.model.MultiLanguageWord;
 import com.app.dictionary.model.Word;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,18 +26,10 @@ public class DictionaryParserImpl implements DictionaryParser {
         List<MultiLanguageWordDefinition> dictionaryDefinition = dictionaryDefinition(content);
         for (MultiLanguageWordDefinition wordDefinitions : dictionaryDefinition) {
             List<Word> words = wordDefinitions.parseWords(wordParser);
-            for (Word word : words) {
-                word.addMeanings(multiLanguageWordsBesidesCurrent(words, word));
-                dictionary.add(word);
-            }
+            MultiLanguageWord multiLanguageWord = new MultiLanguageWord(words);
+            dictionary.add(multiLanguageWord);
         }
         return dictionary;
-    }
-
-    private List<Word> multiLanguageWordsBesidesCurrent(List<Word> words, Word current) {
-        ArrayList<Word> meanings = new ArrayList<>(words);
-        meanings.remove(current);
-        return meanings;
     }
 
     private List<MultiLanguageWordDefinition> dictionaryDefinition(String content) {

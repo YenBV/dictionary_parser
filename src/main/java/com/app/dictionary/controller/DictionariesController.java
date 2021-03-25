@@ -1,6 +1,8 @@
 package com.app.dictionary.controller;
 
+import com.app.dictionary.model.Dictionary;
 import com.app.dictionary.service.DictionaryParser;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.http.MediaType;
@@ -21,9 +23,9 @@ public class DictionariesController {
     }
 
     @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public Dictionary handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         PDDocument doc = PDDocument.load(file.getInputStream());
         String text = new PDFTextStripper().getText(doc);
-        parser.parse(text);
+        return parser.parse(text);
     }
 }
