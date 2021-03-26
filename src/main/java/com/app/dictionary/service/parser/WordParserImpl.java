@@ -1,4 +1,4 @@
-package com.app.dictionary.service;
+package com.app.dictionary.service.parser;
 
 import com.app.dictionary.dao.UkrainianWordRepository;
 import com.app.dictionary.model.UkrainianWord;
@@ -22,24 +22,19 @@ public class WordParserImpl implements WordParser {
 
     @Override
     public Word parse(String wordDefinition) {
-        Word.Builder word = Word.newBuilder();
-        Word.Builder builder = UkrainianWord.newBuilder();
+        UkrainianWord word = new UkrainianWord();
 
         if (wordDefinition.startsWith("! ")) {
             wordDefinition = StringUtils.replace(wordDefinition, "! ", "");
             word.setImportant(true);
-            builder.setImportant(true);
         }
         String[] wordToDef = wordDefinition.split(",", 2);
         word.setWord(wordToDef[0]);
-        builder.setWord(wordToDef[0]);
         String def = wordToDef[1];
         String[] typeToDefinition = def.split(":", 2);
         word.setType(typeToDefinition[0]);
-        builder.setType(typeToDefinition[0]);
         word.setDefinitions(wordDefinitionsParser.parse(typeToDefinition[1]));
-        builder.setDefinitions(wordDefinitionsParser.parse(typeToDefinition[1]));
-        repository.save((UkrainianWord) builder.build());
-        return word.build();
+        repository.save(word);
+        return word;
     }
 }

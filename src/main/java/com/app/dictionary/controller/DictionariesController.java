@@ -1,31 +1,46 @@
 package com.app.dictionary.controller;
 
 import com.app.dictionary.model.Dictionary;
-import com.app.dictionary.service.DictionaryParser;
+import com.app.dictionary.service.DictionaryService;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
-import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/dictionaries")
 public class DictionariesController {
 
-    private final DictionaryParser parser;
+    private final DictionaryService dictionaryService;
 
-    public DictionariesController(DictionaryParser parser) {
-        this.parser = parser;
+    public DictionariesController(DictionaryService dictionaryService) {
+        this.dictionaryService = dictionaryService;
     }
 
-    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Dictionary handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        PDDocument doc = PDDocument.load(file.getInputStream());
-        String text = new PDFTextStripper().getText(doc);
-        return parser.parse(text);
+    @PostMapping("/")
+    void save(@RequestBody Dictionary dictionary) {
+        dictionaryService.save(dictionary);
+    }
+
+    @GetMapping("/{id}")
+    Optional<Dictionary> findById(@PathVariable long id){
+        return dictionaryService.findById(id);
+    }
+
+    @GetMapping("/ua/{wordPrefix}")
+    Optional<Dictionary> findByUkrainianWordStartingWith(@PathVariable String wordPrefix){
+        System.out.println(wordPrefix);
+        System.out.println("================================================================");
+        return dictionaryService.findByUkrainianWordStartingWith(wordPrefix);
+    }
+
+    @GetMapping("/de/{wordPrefix}")
+    Dictionary findByGermanWordStartingWith(@PathVariable String wordPrefix){
+        return dictionaryService.findByGermanWordStartingWith(wordPrefix);
     }
 }

@@ -1,8 +1,9 @@
-package com.app.dictionary.service;
+package com.app.dictionary.service.parser;
 
 import com.app.dictionary.model.Dictionary;
-import com.app.dictionary.model.MultiLanguageWord;
+import com.app.dictionary.model.UkrainianWord;
 import com.app.dictionary.model.Word;
+import com.google.common.collect.ImmutableList;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,15 @@ public class DictionaryParserImpl implements DictionaryParser {
     }
 
     @Override
-    public Dictionary parse(String content) {
-        Dictionary dictionary = new Dictionary();
+    public List<Dictionary> parse(String content) {
+        List<Dictionary> dictionaries = new ArrayList<>();
         List<MultiLanguageWordDefinition> dictionaryDefinition = dictionaryDefinition(content);
         for (MultiLanguageWordDefinition wordDefinitions : dictionaryDefinition) {
             List<Word> words = wordDefinitions.parseWords(wordParser);
-            MultiLanguageWord multiLanguageWord = new MultiLanguageWord(words);
-            dictionary.add(multiLanguageWord);
+            Dictionary multiLanguageWord = new Dictionary((List<UkrainianWord>) (List) words, ImmutableList.of());
+            dictionaries.add(multiLanguageWord);
         }
-        return dictionary;
+        return dictionaries;
     }
 
     private List<MultiLanguageWordDefinition> dictionaryDefinition(String content) {

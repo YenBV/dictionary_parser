@@ -2,9 +2,11 @@ package com.app.dictionary.model;
 
 import org.springframework.lang.Nullable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +23,9 @@ public class WordDefinition {
     @Column(name = "example")
     private String example;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Word word;
+
     public WordDefinition() {
     }
 
@@ -33,12 +38,23 @@ public class WordDefinition {
         this.example = example;
     }
 
-    public String getDefinition() {
-        return definition;
+    public long getId() {
+        return id;
     }
 
-    @Nullable
-    public String getExample() {
-        return example;
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
+
+    public void setExample(@Nullable String example) {
+        this.example = example;
+    }
+
+    public Word getWord() {
+        return word;
+    }
+
+    public void setWord(Word word) {
+        this.word = word;
     }
 }
