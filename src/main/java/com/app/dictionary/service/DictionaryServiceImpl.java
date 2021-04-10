@@ -1,6 +1,7 @@
 package com.app.dictionary.service;
 
 import com.app.dictionary.dao.DictionaryRepository;
+import com.app.dictionary.dto.DictionaryDTO;
 import com.app.dictionary.model.Dictionary;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,9 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public void save(Dictionary dictionary) {
-        dictionaryRepository.save(dictionary);
+    public void save(DictionaryDTO dictionary) {
+        Dictionary entity = dictionary.toDictionary();
+        dictionaryRepository.save(entity);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.app.dictionary.controller;
 
+import com.app.dictionary.dto.DictionaryDTO;
+import com.app.dictionary.dto.WordDTO;
 import com.app.dictionary.model.Dictionary;
 import com.app.dictionary.service.DictionaryService;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +20,8 @@ public class DictionariesController {
     }
 
     @PostMapping("/")
-    void save(@RequestBody Dictionary dictionary) {
-        dictionaryService.save(dictionary);
+    void save(@RequestBody List<WordDTO> words) {
+        dictionaryService.save(new DictionaryDTO(words));
     }
 
     @GetMapping("/{id}")
