@@ -19,9 +19,6 @@ public class WordDefinition {
     @Column(name = "example")
     private String example;
 
-//    @ManyToOne()
-//    private Word word;
-
     public WordDefinition() {
     }
 
