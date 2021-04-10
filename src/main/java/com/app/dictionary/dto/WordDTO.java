@@ -1,12 +1,8 @@
 package com.app.dictionary.dto;
 
-import com.app.dictionary.model.*;
-import org.apache.commons.lang3.tuple.Pair;
+import com.app.dictionary.model.WordDefinition;
 
 import java.util.List;
-
-import static com.app.dictionary.model.Language.GERMANY;
-import static com.app.dictionary.model.Language.UKRAINIAN;
 
 public class WordDTO {
 
@@ -16,25 +12,6 @@ public class WordDTO {
     private List<WordDefinition> definitions;
     private boolean important;
     private String language;
-
-    public Pair<Language, Word> toWord() {
-        if (UKRAINIAN == Language.determineLanguage(language)) {
-            UkrainianWord entity = new UkrainianWord();
-            fillCopy(entity);
-            return Pair.of(UKRAINIAN, entity);
-        } else {
-            GermanWord entity = new GermanWord();
-            return Pair.of(GERMANY, entity);
-        }
-    }
-
-    private void fillCopy(Word entity) {
-        entity.setWord(word);
-        entity.setMorphologyEndings(morphologyEndings);
-        entity.setMorphologyCategory(morphologyCategory);
-        entity.setDefinitions(definitions);
-        entity.setImportant(important);
-    }
 
     public String getWord() {
         return word;

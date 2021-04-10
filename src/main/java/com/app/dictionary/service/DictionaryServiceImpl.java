@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
@@ -46,7 +47,11 @@ public class DictionaryServiceImpl implements DictionaryService {
 //    }
 
     @Override
-    public List<Dictionary> findAll() {
-        return dictionaryRepository.findAll();
+    public List<DictionaryDTO> findAll() {
+        List<Dictionary> dictionaries = dictionaryRepository.findAll();
+        return dictionaries
+                .stream()
+                .map(DictionaryDTO::from)
+                .collect(Collectors.toList());
     }
 }

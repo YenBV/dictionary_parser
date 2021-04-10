@@ -1,9 +1,7 @@
 [
   {
-    "id": 1,
-    "ukrainianWords": [
+    "words": [
       {
-        "id": 2,
         "word": "АБІТУРІЄНТ",
         "morphologyEndings": " -а, ч",
         "morphologyCategory": null,
@@ -22,10 +20,9 @@
           }
         ],
         "important": true,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       },
       {
-        "id": 5,
         "word": "Abiturient",
         "morphologyEndings": " m (-en, -en)",
         "morphologyCategory": null,
@@ -38,16 +35,13 @@
           }
         ],
         "important": true,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       }
-    ],
-    "germanWords": []
+    ]
   },
   {
-    "id": 7,
-    "ukrainianWords": [
+    "words": [
       {
-        "id": 8,
         "word": "АБСОЛЮТН/ИЙ",
         "morphologyEndings": " -а, -е",
         "morphologyCategory": null,
@@ -84,10 +78,9 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       },
       {
-        "id": 14,
         "word": "absolut",
         "morphologyEndings": " adj",
         "morphologyCategory": null,
@@ -112,16 +105,13 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       }
-    ],
-    "germanWords": []
+    ]
   },
   {
-    "id": 18,
-    "ukrainianWords": [
+    "words": [
       {
-        "id": 19,
         "word": "АБСУРД",
         "morphologyEndings": " -а, ч",
         "morphologyCategory": null,
@@ -134,10 +124,9 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       },
       {
-        "id": 21,
         "word": "Absurdum",
         "morphologyEndings": " n (-s, Absurda)",
         "morphologyCategory": null,
@@ -150,10 +139,9 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       },
       {
-        "id": 23,
         "word": "Absurdität",
         "morphologyEndings": " f (=, -en)",
         "morphologyCategory": null,
@@ -166,16 +154,13 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       }
-    ],
-    "germanWords": []
+    ]
   },
   {
-    "id": 25,
-    "ukrainianWords": [
+    "words": [
       {
-        "id": 26,
         "word": "АМАТОР",
         "morphologyEndings": " -а, ч",
         "morphologyCategory": null,
@@ -188,10 +173,9 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       },
       {
-        "id": 28,
         "word": "Amateur",
         "morphologyEndings": " m (-s, -e)",
         "morphologyCategory": null,
@@ -210,16 +194,13 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       }
-    ],
-    "germanWords": []
+    ]
   },
   {
-    "id": 31,
-    "ukrainianWords": [
+    "words": [
       {
-        "id": 32,
         "word": "АНТИКВАР",
         "morphologyEndings": " -а, ч",
         "morphologyCategory": null,
@@ -255,10 +236,9 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       },
       {
-        "id": 38,
         "word": "Antiquar",
         "morphologyEndings": " m (-s, -e)",
         "morphologyCategory": null,
@@ -277,9 +257,8 @@
           }
         ],
         "important": false,
-        "language": "Ukrainian"
+        "language": "ukrainian"
       }
-    ],
-    "germanWords": []
+    ]
   }
 ]

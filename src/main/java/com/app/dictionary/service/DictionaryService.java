@@ -16,5 +16,5 @@ public interface DictionaryService {
 //
 //    List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix);
 
-    List<Dictionary> findAll();
+    List<DictionaryDTO> findAll();
 }

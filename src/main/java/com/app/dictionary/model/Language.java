@@ -10,6 +10,10 @@ public enum Language {
         this.value = value;
     }
 
+    public String value() {
+        return value;
+    }
+
 
     public static Language determineLanguage(String input) {
         for (Language language : values()) {

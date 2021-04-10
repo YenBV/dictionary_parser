@@ -40,7 +40,7 @@ public class DictionariesController {
 //    }
 
     @GetMapping("/")
-    List<Dictionary> findAll() {
+    List<DictionaryDTO> findAll() {
         return dictionaryService.findAll();
     }
 }
