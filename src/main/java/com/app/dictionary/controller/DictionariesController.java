@@ -27,17 +27,15 @@ public class DictionariesController {
         return dictionaryService.findById(id);
     }
 
-    @GetMapping("/ua/{wordPrefix}")
-    Optional<Dictionary> findByUkrainianWordStartingWith(@PathVariable String wordPrefix) {
-        System.out.println(wordPrefix);
-        System.out.println("================================================================");
-        return dictionaryService.findByUkrainianWordStartingWith(wordPrefix);
-    }
-
-    @GetMapping("/de/{wordPrefix}")
-    Dictionary findByGermanWordStartingWith(@PathVariable String wordPrefix) {
-        return dictionaryService.findByGermanWordStartingWith(wordPrefix);
-    }
+//    @GetMapping("/ua/{wordPrefix}")
+//    List<Dictionary> findByUkrainianWordStartingWith(@PathVariable String wordPrefix) {
+//        return dictionaryService.findByUkrainianWordStartingWith(wordPrefix);
+//    }
+//
+//    @GetMapping("/de/{wordPrefix}")
+//    List<Dictionary> findByGermanWordStartingWith(@PathVariable String wordPrefix) {
+//        return dictionaryService.findByGermanWordStartingWith(wordPrefix);
+//    }
 
     @GetMapping("/")
     List<Dictionary> findAll() {

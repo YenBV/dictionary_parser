@@ -2,9 +2,9 @@ package com.app.dictionary.service;
 
 import com.app.dictionary.dao.UkrainianWordRepository;
 import com.app.dictionary.model.UkrainianWord;
-
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,7 +22,7 @@ public class UkrainianWordServiceImpl implements UkrainianWordService {
     }
 
     @Override
-    public UkrainianWord findByWordStartingWith(String wordPrefix) {
+    public List<UkrainianWord> findByWordStartingWith(String wordPrefix) {
         return ukrainianWordRepository.findByWordStartingWith(wordPrefix);
     }
 }

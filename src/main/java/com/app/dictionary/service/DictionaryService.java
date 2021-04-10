@@ -11,9 +11,9 @@ public interface DictionaryService {
 
     Optional<Dictionary> findById(long id);
 
-    Optional<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix);
-
-    Dictionary findByGermanWordStartingWith(String germanWordPrefix);
+//    List<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix);
+//
+//    List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix);
 
     List<Dictionary> findAll();
 }
