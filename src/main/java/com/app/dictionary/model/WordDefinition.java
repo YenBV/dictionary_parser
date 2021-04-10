@@ -3,6 +3,7 @@ package com.app.dictionary.model;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "word_definition")
@@ -18,6 +19,9 @@ public class WordDefinition {
     @Nullable
     @Column(name = "example")
     private String example;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<EquivalentWordDefinition> equivalentDefinitions;
 
     public WordDefinition() {
     }
@@ -50,5 +54,13 @@ public class WordDefinition {
 
     public void setExample(@Nullable String example) {
         this.example = example;
+    }
+
+    public List<EquivalentWordDefinition> getEquivalentDefinitions() {
+        return equivalentDefinitions;
+    }
+
+    public void setEquivalentDefinitions(List<EquivalentWordDefinition> equivalentDefinitions) {
+        this.equivalentDefinitions = equivalentDefinitions;
     }
 }
