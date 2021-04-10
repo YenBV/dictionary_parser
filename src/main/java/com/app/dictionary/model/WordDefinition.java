@@ -20,6 +20,16 @@ public class WordDefinition {
     @Column(name = "example")
     private String example;
 
+    @Nullable
+    @Column(name = "stylisticMeaning")
+    private String stylisticMeaning;
+
+    /**
+     * `*` next to definition number means true.
+     */
+    @Column(name = "idiosyncraticMeaning")
+    private boolean idiosyncraticMeaning;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<EquivalentWordDefinition> equivalentDefinitions;
 
@@ -54,6 +64,23 @@ public class WordDefinition {
 
     public void setExample(@Nullable String example) {
         this.example = example;
+    }
+
+    @Nullable
+    public String getStylisticMeaning() {
+        return stylisticMeaning;
+    }
+
+    public void setStylisticMeaning(@Nullable String stylisticMeaning) {
+        this.stylisticMeaning = stylisticMeaning;
+    }
+
+    public boolean isIdiosyncraticMeaning() {
+        return idiosyncraticMeaning;
+    }
+
+    public void setIdiosyncraticMeaning(boolean idiosyncraticMeaning) {
+        this.idiosyncraticMeaning = idiosyncraticMeaning;
     }
 
     public List<EquivalentWordDefinition> getEquivalentDefinitions() {
