@@ -1,28 +1,20 @@
 package com.app.dictionary.model;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "dictionary")
 public class Dictionary {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToMany(mappedBy = "dictionary")
+    @OneToMany(cascade = CascadeType.ALL)
     private List<UkrainianWord> ukrainianWords;
 
-    @OneToMany(mappedBy = "dictionary", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<GermanWord> germanWords;
 
     public Dictionary() {

@@ -1,23 +1,21 @@
 package com.app.dictionary.service.parser;
 
-import com.app.dictionary.dao.UkrainianWordRepository;
 import com.app.dictionary.model.UkrainianWord;
 import com.app.dictionary.model.Word;
-
+import com.app.dictionary.model.WordDefinition;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class WordParserImpl implements WordParser {
 
     private final WordDefinitionsParser wordDefinitionsParser;
-    private final UkrainianWordRepository repository;
 
     public WordParserImpl(
-            WordDefinitionsParser wordDefinitionsParser,
-            UkrainianWordRepository repository) {
+            WordDefinitionsParser wordDefinitionsParser) {
         this.wordDefinitionsParser = wordDefinitionsParser;
-        this.repository = repository;
     }
 
     @Override
@@ -33,8 +31,11 @@ public class WordParserImpl implements WordParser {
         String def = wordToDef[1];
         String[] typeToDefinition = def.split(":", 2);
         word.setType(typeToDefinition[0]);
-        word.setDefinitions(wordDefinitionsParser.parse(typeToDefinition[1]));
-        repository.save(word);
+        List<WordDefinition> wordDefinitions = wordDefinitionsParser.parse(typeToDefinition[1]);
+//        for (WordDefinition definition : wordDefinitions) {
+//            definition.setWord(word);
+//        }
+        word.setDefinitions(wordDefinitions);
         return word;
     }
 }

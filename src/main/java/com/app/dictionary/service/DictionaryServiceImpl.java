@@ -3,12 +3,11 @@ package com.app.dictionary.service;
 import com.app.dictionary.dao.DictionaryRepository;
 import com.app.dictionary.model.Dictionary;
 import com.app.dictionary.model.UkrainianWord;
-
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DictionaryServiceImpl implements DictionaryService {
@@ -24,8 +23,8 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public void save(Dictionary word) {
-        dictionaryRepository.save(word);
+    public void save(Dictionary dictionary) {
+        dictionaryRepository.save(dictionary);
     }
 
     @Override
@@ -37,8 +36,6 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public Optional<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix) {
         UkrainianWord ukrWord = ukrainianWordService.findByWordStartingWith(uaWordPrefix);
-        System.out.println(ukrWord);
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         return dictionaryRepository.findByUkrainianWordsContains(ukrWord);
     }
 
@@ -46,5 +43,10 @@ public class DictionaryServiceImpl implements DictionaryService {
     public Dictionary findByGermanWordStartingWith(String germanWordPrefix) {
         //TODO:2021-03-26:yenbv: impl.
         throw new RuntimeException("Not supported yet");
+    }
+
+    @Override
+    public List<Dictionary> findAll() {
+        return dictionaryRepository.findAll();
     }
 }

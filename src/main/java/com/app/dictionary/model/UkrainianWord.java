@@ -1,9 +1,7 @@
 package com.app.dictionary.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,8 +11,8 @@ public class UkrainianWord extends Word {
     @Column(name = "language")
     private String language = "Ukrainian";
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Dictionary dictionary;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private Dictionary dictionary;
 
     public String getLanguage() {
         return language;
@@ -24,11 +22,11 @@ public class UkrainianWord extends Word {
         this.language = language;
     }
 
-    public Dictionary getMultiLanguageWord() {
-        return dictionary;
-    }
-
-    public void setMultiLanguageWord(Dictionary dictionary) {
-        this.dictionary = dictionary;
-    }
+//    public Dictionary getMultiLanguageWord() {
+//        return dictionary;
+//    }
+//
+//    public void setMultiLanguageWord(Dictionary dictionary) {
+//        this.dictionary = dictionary;
+//    }
 }

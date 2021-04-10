@@ -1,10 +1,10 @@
 package com.app.dictionary.service.parser;
 
+import com.app.dictionary.dao.DictionaryRepository;
 import com.app.dictionary.model.Dictionary;
 import com.app.dictionary.model.UkrainianWord;
 import com.app.dictionary.model.Word;
 import com.google.common.collect.ImmutableList;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +15,11 @@ import java.util.regex.Pattern;
 @Service
 public class DictionaryParserImpl implements DictionaryParser {
 
+    private final DictionaryRepository dictionaryRepository;
     private final WordParser wordParser;
 
-    public DictionaryParserImpl(WordParser wordParser) {
+    public DictionaryParserImpl(DictionaryRepository dictionaryRepository, WordParser wordParser) {
+        this.dictionaryRepository = dictionaryRepository;
         this.wordParser = wordParser;
     }
 
@@ -27,8 +29,13 @@ public class DictionaryParserImpl implements DictionaryParser {
         List<MultiLanguageWordDefinition> dictionaryDefinition = dictionaryDefinition(content);
         for (MultiLanguageWordDefinition wordDefinitions : dictionaryDefinition) {
             List<Word> words = wordDefinitions.parseWords(wordParser);
-            Dictionary multiLanguageWord = new Dictionary((List<UkrainianWord>) (List) words, ImmutableList.of());
+            List<UkrainianWord> urkWords = (List) words;
+            Dictionary multiLanguageWord = new Dictionary(urkWords, ImmutableList.of());
+//            for (UkrainianWord urkWord : urkWords) {
+//                urkWord.setMultiLanguageWord(multiLanguageWord);
+//            }
             dictionaries.add(multiLanguageWord);
+            dictionaryRepository.save(multiLanguageWord);
         }
         return dictionaries;
     }

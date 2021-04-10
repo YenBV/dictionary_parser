@@ -1,23 +1,15 @@
 package com.app.dictionary.model;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Word {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @Column(name = "word")
@@ -26,7 +18,7 @@ public abstract class Word {
     @Column(name = "type")
     private String type;
 
-    @OneToMany(mappedBy = "word", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<WordDefinition> definitions;
 
     @Column(name = "important")
