@@ -4,5 +4,5 @@ import com.app.dictionary.model.Word;
 
 public interface WordParser {
 
-    Word parse(String wordDefinition);
+    Word parse(String word);
 }

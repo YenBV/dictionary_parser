@@ -26,8 +26,8 @@ public class DictionaryParserImpl implements DictionaryParser {
     @Override
     public List<Dictionary> parse(String content) {
         List<Dictionary> dictionaries = new ArrayList<>();
-        List<MultiLanguageWordDefinition> dictionaryDefinition = dictionaryDefinition(content);
-        for (MultiLanguageWordDefinition wordDefinitions : dictionaryDefinition) {
+        List<WordsParser> dictionaryDefinition = dictionaryDefinition(content);
+        for (WordsParser wordDefinitions : dictionaryDefinition) {
             List<Word> words = wordDefinitions.parseWords(wordParser);
             List<UkrainianWord> urkWords = (List) words;
             Dictionary multiLanguageWord = new Dictionary(urkWords, ImmutableList.of());
@@ -40,8 +40,8 @@ public class DictionaryParserImpl implements DictionaryParser {
         return dictionaries;
     }
 
-    private List<MultiLanguageWordDefinition> dictionaryDefinition(String content) {
-        List<MultiLanguageWordDefinition> result = new ArrayList<>();
+    private List<WordsParser> dictionaryDefinition(String content) {
+        List<WordsParser> result = new ArrayList<>();
         List<String> wordDefinitions = new ArrayList<>();
         StringBuilder wordDefBuilder = new StringBuilder();
 
@@ -50,7 +50,7 @@ public class DictionaryParserImpl implements DictionaryParser {
             String pureLine = line.trim();
             if (Pattern.compile("⁕([⁕ ]+)⁕").matcher(pureLine).matches()) {
                 if (!wordDefinitions.isEmpty()) {
-                    result.add(new MultiLanguageWordDefinition(wordDefinitions));
+                    result.add(new WordsParser(wordDefinitions));
                     wordDefinitions = new ArrayList<>();
                 }
                 continue;
@@ -65,7 +65,7 @@ public class DictionaryParserImpl implements DictionaryParser {
             wordDefBuilder.append(pureLine);
         }
         wordDefinitions.add(wordDefBuilder.toString());
-        result.add(new MultiLanguageWordDefinition(wordDefinitions));
+        result.add(new WordsParser(wordDefinitions));
         return result;
     }
 }

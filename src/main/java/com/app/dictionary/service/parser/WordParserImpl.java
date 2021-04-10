@@ -19,22 +19,20 @@ public class WordParserImpl implements WordParser {
     }
 
     @Override
-    public Word parse(String wordDefinition) {
+    public Word parse(String wordStr) {
         UkrainianWord word = new UkrainianWord();
 
-        if (wordDefinition.startsWith("! ")) {
-            wordDefinition = StringUtils.replace(wordDefinition, "! ", "");
+        if (wordStr.startsWith("! ")) {
+            wordStr = StringUtils.replace(wordStr, "! ", "");
             word.setImportant(true);
         }
-        String[] wordToDef = wordDefinition.split(",", 2);
+        String[] wordToDef = wordStr.split(",", 2);
         word.setWord(wordToDef[0]);
         String def = wordToDef[1];
         String[] typeToDefinition = def.split(":", 2);
-        word.setType(typeToDefinition[0]);
+        //TODO:2021-04-10:yen: checkout prefixes
+        word.setMorphologyEndings(typeToDefinition[0]);
         List<WordDefinition> wordDefinitions = wordDefinitionsParser.parse(typeToDefinition[1]);
-//        for (WordDefinition definition : wordDefinitions) {
-//            definition.setWord(word);
-//        }
         word.setDefinitions(wordDefinitions);
         return word;
     }

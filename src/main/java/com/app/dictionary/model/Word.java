@@ -14,8 +14,11 @@ public abstract class Word {
     @Column(name = "word")
     private String word;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "morphologyEndings")
+    private String morphologyEndings;
+
+    @Column(name = "morphologyCategory")
+    private String morphologyCategory;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<WordDefinition> definitions;
@@ -35,12 +38,20 @@ public abstract class Word {
         this.word = word;
     }
 
-    public String getType() {
-        return type;
+    public String getMorphologyEndings() {
+        return morphologyEndings;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setMorphologyEndings(String morphologyEndings) {
+        this.morphologyEndings = morphologyEndings;
+    }
+
+    public String getMorphologyCategory() {
+        return morphologyCategory;
+    }
+
+    public void setMorphologyCategory(String morphologyCategory) {
+        this.morphologyCategory = morphologyCategory;
     }
 
     public List<WordDefinition> getDefinitions() {
@@ -62,9 +73,11 @@ public abstract class Word {
     @Override
     public String toString() {
         return "Word{" +
-                "word='" + word + '\'' +
-                ", type='" + type + '\'' +
-                ", definition='" + definitions + '\'' +
+                "id=" + id +
+                ", word='" + word + '\'' +
+                ", morphologyEndings='" + morphologyEndings + '\'' +
+                ", morphologyCategory='" + morphologyCategory + '\'' +
+                ", definitions=" + definitions +
                 ", important=" + important +
                 '}';
     }

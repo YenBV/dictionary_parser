@@ -1,17 +1,13 @@
 package com.app.dictionary.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "german_word")
 public class GermanWord extends Word {
 
     @Column(name = "language")
-    private String language = "German";
+    private String language = "germany";
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Dictionary dictionary;

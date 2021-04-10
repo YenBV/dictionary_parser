@@ -5,16 +5,16 @@ import com.app.dictionary.model.Word;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MultiLanguageWordDefinition {
+public class WordsParser {
 
-    private final List<String> wordDefinitions;
+    private final List<String> words;
 
-    public MultiLanguageWordDefinition(List<String> words) {
-        this.wordDefinitions = words;
+    public WordsParser(List<String> words) {
+        this.words = words;
     }
 
     public List<Word> parseWords(WordParser wordParser) {
-        return wordDefinitions
+        return words
                 .stream()
                 .map(wordParser::parse)
                 .collect(Collectors.toList());

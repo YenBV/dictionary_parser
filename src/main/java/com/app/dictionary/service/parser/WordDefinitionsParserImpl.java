@@ -19,7 +19,7 @@ public class WordDefinitionsParserImpl implements WordDefinitionsParser {
 
     @Override
     public List<WordDefinition> parse(String wordDefinitions) {
-        String[] definitions = wordDefinitions.trim().split("(.s)?[0-9].?\\*?");
+        String[] definitions = wordDefinitions.trim().split(";?(.s)?[0-9][^:]\\\\*?");
         return Arrays.stream(definitions)
                 .filter(StringUtils::isNotBlank)
                 .map(wordDefinitionParser::parse)
