@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class GermanWord extends Word {
 
     @Column(name = "language")
-    private String language = "germany";
+    private String language = "german";
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Dictionary dictionary;

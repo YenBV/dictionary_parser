@@ -2,7 +2,7 @@ package com.app.dictionary.model;
 
 public enum Language {
     UKRAINIAN("ukrainian"),
-    GERMANY("germany");
+    GERMANY("german");
 
     private final String value;
 
