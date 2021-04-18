@@ -12,9 +12,9 @@ public interface DictionaryService {
 
     Optional<Dictionary> findById(long id);
 
-//    List<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix);
-//
-//    List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix);
+    List<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix);
+
+    List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix);
 
     List<DictionaryDTO> findAll();
 }

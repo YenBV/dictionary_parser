@@ -31,9 +31,6 @@ public class DictionaryParserImpl implements DictionaryParser {
             List<Word> words = wordDefinitions.parseWords(wordParser);
             List<UkrainianWord> urkWords = (List) words;
             Dictionary multiLanguageWord = new Dictionary(urkWords, ImmutableList.of());
-//            for (UkrainianWord urkWord : urkWords) {
-//                urkWord.setMultiLanguageWord(multiLanguageWord);
-//            }
             dictionaries.add(multiLanguageWord);
             dictionaryRepository.save(multiLanguageWord);
         }

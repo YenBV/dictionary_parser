@@ -3,7 +3,10 @@ package com.app.dictionary.service;
 import com.app.dictionary.dao.DictionaryRepository;
 import com.app.dictionary.dto.DictionaryDTO;
 import com.app.dictionary.model.Dictionary;
+import com.app.dictionary.model.GermanWord;
+import com.app.dictionary.model.UkrainianWord;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,12 +16,15 @@ import java.util.stream.Collectors;
 public class DictionaryServiceImpl implements DictionaryService {
 
     private final UkrainianWordService ukrainianWordService;
+    public final GermanWordService germanWordService;
     private final DictionaryRepository dictionaryRepository;
 
     public DictionaryServiceImpl(
             UkrainianWordService ukrainianWordService,
+            GermanWordService germanWordService,
             DictionaryRepository dictionaryRepository) {
         this.ukrainianWordService = ukrainianWordService;
+        this.germanWordService = germanWordService;
         this.dictionaryRepository = dictionaryRepository;
     }
 
@@ -33,18 +39,18 @@ public class DictionaryServiceImpl implements DictionaryService {
         return dictionaryRepository.findById(id);
     }
 
-//    @Transactional
-//    @Override
-//    public List<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix) {
-//        List<UkrainianWord> ukrWord = ukrainianWordService.findByWordStartingWith(uaWordPrefix);
-//        return dictionaryRepository.findByUkrainianWordsContains(ukrWord);
-//    }
+    @Transactional
+    @Override
+    public List<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix) {
+        List<UkrainianWord> ukrWords = ukrainianWordService.findByWordStartingWith(uaWordPrefix);
+        return dictionaryRepository.findDictionariesByUkrainianWordsIn(ukrWords);
+    }
 
-//    @Override
-//    public List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix) {
-//        //TODO:2021-03-26:yenbv: impl.
-//        throw new RuntimeException("Not supported yet");
-//    }
+    @Override
+    public List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix) {
+        List<GermanWord> germanWords = germanWordService.findByWordStartingWith(germanWordPrefix);
+        return dictionaryRepository.findDictionariesByGermanWordsIn(germanWords);
+    }
 
     @Override
     public List<DictionaryDTO> findAll() {
