@@ -8,4 +8,6 @@ import java.util.List;
 public interface UkrainianWordRepository extends JpaRepository<UkrainianWord, Long> {
 
     List<UkrainianWord> findByWordStartingWith(String wordPrefix);
+
+    List<UkrainianWord> findByWordContainsIgnoreCase(String wordPart);
 }

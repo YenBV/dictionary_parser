@@ -8,4 +8,6 @@ import java.util.List;
 public interface GermanWordRepository extends JpaRepository<GermanWord, Long> {
 
     List<GermanWord> findByWordStartingWith(String wordPrefix);
+
+    List<GermanWord> findByWordContainsIgnoreCase(String wordPart);
 }

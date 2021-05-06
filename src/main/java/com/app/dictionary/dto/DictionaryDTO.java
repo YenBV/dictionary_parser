@@ -1,15 +1,22 @@
 package com.app.dictionary.dto;
 
-import com.app.dictionary.model.*;
+import com.app.dictionary.model.Dictionary;
+import com.app.dictionary.model.GermanWord;
+import com.app.dictionary.model.Language;
+import com.app.dictionary.model.UkrainianWord;
+import com.app.dictionary.model.Word;
 import org.apache.commons.collections4.ListUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.app.dictionary.model.Language.*;
+import static com.app.dictionary.model.Language.GERMANY;
+import static com.app.dictionary.model.Language.UKRAINIAN;
+import static com.app.dictionary.model.Language.determineLanguage;
 
 public class DictionaryDTO {
+    private long id;
     private List<WordDTO> words;
 
     public DictionaryDTO(List<WordDTO> words) {
@@ -17,6 +24,14 @@ public class DictionaryDTO {
     }
 
     public DictionaryDTO() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public List<WordDTO> getWords() {
@@ -46,6 +61,7 @@ public class DictionaryDTO {
         }
         dictionary.setUkrainianWords(ukrainianWords);
         dictionary.setGermanWords(germanWords);
+        dictionary.setId(getId());
         return dictionary;
     }
 
@@ -65,11 +81,14 @@ public class DictionaryDTO {
                     return wordDTO;
                 }).collect(Collectors.toList());
         List<WordDTO> words = ListUtils.union(urkWords, germanWords);
-        return new DictionaryDTO(words);
+        DictionaryDTO dictionaryDTO = new DictionaryDTO(words);
+        dictionaryDTO.setId(dictionary.getId());
+        return dictionaryDTO;
     }
 
     private static WordDTO toDto(Word word) {
         WordDTO wordDTO = new WordDTO();
+        wordDTO.setId(word.getId());
         wordDTO.setWord(word.getWord());
         wordDTO.setDefinitions(word.getDefinitions());
         wordDTO.setImportant(word.isImportant());
@@ -80,6 +99,7 @@ public class DictionaryDTO {
 
     private static void copyToWord(Word entity, WordDTO dto) {
         entity.setWord(dto.getWord());
+        entity.setId(dto.getId());
         entity.setMorphologyEndings(dto.getMorphologyEndings());
         entity.setMorphologyCategory(dto.getMorphologyCategory());
         entity.setDefinitions(dto.getDefinitions());

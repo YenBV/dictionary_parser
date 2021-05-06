@@ -6,12 +6,21 @@ import java.util.List;
 
 public class WordDTO {
 
+    private long id;
     private String word;
     private String morphologyEndings;
     private String morphologyCategory;
     private List<WordDefinition> definitions;
     private boolean important;
     private String language;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getWord() {
         return word;

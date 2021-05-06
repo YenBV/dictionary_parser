@@ -10,4 +10,6 @@ public interface GermanWordService {
     Optional<GermanWord> findById(long id);
 
     List<GermanWord> findByWordStartingWith(String prefix);
+
+    List<GermanWord> findByWordContains(String wordPart);
 }

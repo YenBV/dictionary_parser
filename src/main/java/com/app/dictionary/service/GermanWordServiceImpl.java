@@ -25,4 +25,9 @@ public class GermanWordServiceImpl implements GermanWordService {
     public List<GermanWord> findByWordStartingWith(String prefix) {
         return germanWordRepository.findByWordStartingWith(prefix);
     }
+
+    @Override
+    public List<GermanWord> findByWordContains(String wordPart) {
+        return germanWordRepository.findByWordContainsIgnoreCase(wordPart);
+    }
 }

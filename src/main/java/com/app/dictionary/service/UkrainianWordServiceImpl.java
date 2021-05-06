@@ -25,4 +25,9 @@ public class UkrainianWordServiceImpl implements UkrainianWordService {
     public List<UkrainianWord> findByWordStartingWith(String wordPrefix) {
         return ukrainianWordRepository.findByWordStartingWith(wordPrefix);
     }
+
+    @Override
+    public List<UkrainianWord> findByWordContains(String wordPart) {
+        return ukrainianWordRepository.findByWordContainsIgnoreCase(wordPart);
+    }
 }
