@@ -5,6 +5,7 @@ import com.app.dictionary.model.GermanWord;
 import com.app.dictionary.model.Language;
 import com.app.dictionary.model.UkrainianWord;
 import com.app.dictionary.model.Word;
+import lombok.Data;
 import org.apache.commons.collections4.ListUtils;
 
 import java.util.ArrayList;
@@ -15,8 +16,9 @@ import static com.app.dictionary.model.Language.GERMANY;
 import static com.app.dictionary.model.Language.UKRAINIAN;
 import static com.app.dictionary.model.Language.determineLanguage;
 
+@Data
 public class DictionaryDTO {
-    private long id;
+    private String id;
     private List<WordDTO> words;
 
     public DictionaryDTO(List<WordDTO> words) {
@@ -24,22 +26,6 @@ public class DictionaryDTO {
     }
 
     public DictionaryDTO() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public List<WordDTO> getWords() {
-        return words;
-    }
-
-    public void setWords(List<WordDTO> words) {
-        this.words = words;
     }
 
     public Dictionary toDictionary() {
@@ -88,7 +74,6 @@ public class DictionaryDTO {
 
     private static WordDTO toDto(Word word) {
         WordDTO wordDTO = new WordDTO();
-        wordDTO.setId(word.getId());
         wordDTO.setWord(word.getWord());
         wordDTO.setDefinitions(word.getDefinitions());
         wordDTO.setImportant(word.isImportant());
@@ -99,7 +84,6 @@ public class DictionaryDTO {
 
     private static void copyToWord(Word entity, WordDTO dto) {
         entity.setWord(dto.getWord());
-        entity.setId(dto.getId());
         entity.setMorphologyEndings(dto.getMorphologyEndings());
         entity.setMorphologyCategory(dto.getMorphologyCategory());
         entity.setDefinitions(dto.getDefinitions());

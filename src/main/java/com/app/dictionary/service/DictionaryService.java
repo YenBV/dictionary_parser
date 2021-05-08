@@ -8,21 +8,21 @@ import java.util.Optional;
 
 public interface DictionaryService {
 
-    void save(DictionaryDTO word);
+    void save(DictionaryDTO word, String fistLanguage, String secondLanguage);
 
-    Optional<Dictionary> findById(long id);
+    Optional<Dictionary> findById(String id, String fistLanguage, String secondLanguage);
 
-    List<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix);
+    List<Dictionary> findByUkrainianWordStartingWith(String uaWordPrefix, String fistLanguage, String secondLanguage);
 
-    List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix);
+    List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix, String fistLanguage, String secondLanguage);
 
-    List<DictionaryDTO> findAll();
+    List<DictionaryDTO> findAll(String fistLanguage, String secondLanguage);
 
-    Dictionary update(Dictionary dictionary);
+    Dictionary update(Dictionary dictionary, String fistLanguage, String secondLanguage);
 
-    void remove(Long id);
+    void remove(String id, String fistLanguage, String secondLanguage);
 
-    List<Dictionary> findByUkrainianWordContains(String wordPart);
+    List<Dictionary> findByUkrainianWordContains(String wordPart, String fistLanguage, String secondLanguage);
 
-    List<Dictionary> findByGermanWordContains(String wordPart);
+    List<Dictionary> findByGermanWordContains(String wordPart, String fistLanguage, String secondLanguage);
 }

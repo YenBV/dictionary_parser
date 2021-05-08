@@ -2,10 +2,10 @@ package com.app.dictionary.controller;
 
 import com.app.dictionary.model.Dictionary;
 import com.app.dictionary.service.parser.DictionaryParser;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +23,11 @@ public class DictionariesUploadController {
         this.parser = parser;
     }
 
-    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public List<Dictionary> handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping(value = "/{firstLanguage}/{secondLanguage}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<Dictionary> handleFileUpload(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @RequestParam("file") MultipartFile file) throws IOException {
         try(PDDocument doc = PDDocument.load(file.getInputStream())) {
             String text = new PDFTextStripper().getText(doc);
-            return parser.parse(text);
+            return parser.parse(text, firstLanguage, secondLanguage);
         }
     }
 }

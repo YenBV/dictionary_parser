@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface DictionaryParser {
 
-    List<Dictionary> parse(String content);
+    List<Dictionary> parse(String content, String firstLanguage, String secondLanguage);
 }
