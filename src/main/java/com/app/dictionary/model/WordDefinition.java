@@ -7,22 +7,19 @@ import java.util.List;
 
 @Data
 public class WordDefinition {
-    private long id;
+
     private String definition;
     private String example;
-    private String stylisticMeaning;
+    private String stylisticMarker;
 
     /**
      * `*` next to definition number means true.
      */
     private boolean idiosyncraticMeaning;
+    private boolean equalMeaning;
     private List<EquivalentWordDefinition> equivalentDefinitions;
 
     public WordDefinition() {
-    }
-
-    public WordDefinition(String definition) {
-        this(definition, null);
     }
 
     public WordDefinition(String definition, @Nullable String example) {

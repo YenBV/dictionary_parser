@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class EquivalentWordDefinition {
 
-    private long id;
-    private String language;
+    private String precedingComment;
     private String definition;
 }

@@ -1,6 +1,5 @@
 package com.app.dictionary.service.parser;
 
-import com.app.dictionary.model.UkrainianWord;
 import com.app.dictionary.model.Word;
 import com.app.dictionary.model.WordDefinition;
 import org.apache.commons.lang3.StringUtils;
@@ -20,11 +19,12 @@ public class WordParserImpl implements WordParser {
 
     @Override
     public Word parse(String wordStr) {
-        UkrainianWord word = new UkrainianWord();
+        Word word = new Word();
 
         if (wordStr.startsWith("! ")) {
             wordStr = StringUtils.replace(wordStr, "! ", "");
-            word.setImportant(true);
+            //TODO:2021-05-08:yen: falseParallel
+//            word.setImportant(true);
         }
         String[] wordToDef = wordStr.split(",", 2);
         word.setWord(wordToDef[0]);

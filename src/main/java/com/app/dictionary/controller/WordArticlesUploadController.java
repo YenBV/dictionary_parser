@@ -1,6 +1,6 @@
 package com.app.dictionary.controller;
 
-import com.app.dictionary.model.Dictionary;
+import com.app.dictionary.model.WordArticle;
 import com.app.dictionary.service.parser.DictionaryParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -15,16 +15,16 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-public class DictionariesUploadController {
+public class WordArticlesUploadController {
 
     private final DictionaryParser parser;
 
-    public DictionariesUploadController(DictionaryParser parser) {
+    public WordArticlesUploadController(DictionaryParser parser) {
         this.parser = parser;
     }
 
-    @PostMapping(value = "/{firstLanguage}/{secondLanguage}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public List<Dictionary> handleFileUpload(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping(value = "/pdf/{firstLanguage}/{secondLanguage}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<WordArticle> handleFileUpload(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @RequestParam("file") MultipartFile file) throws IOException {
         try(PDDocument doc = PDDocument.load(file.getInputStream())) {
             String text = new PDFTextStripper().getText(doc);
             return parser.parse(text, firstLanguage, secondLanguage);
