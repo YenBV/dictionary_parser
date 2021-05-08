@@ -1,7 +1,6 @@
 package com.app.dictionary.dao;
 
 import com.app.dictionary.model.WordArticle;
-import com.mongodb.client.result.DeleteResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -46,7 +45,6 @@ public class WordArticleMongoRepository {
 
     public List<WordArticle> findByOtherLanguageWordsContains(String wordPart, String collection) {
         //todo replace duplicate
-
         return mongoTemplate.find(query(where("otherLanguageWords.word").regex(format(".*%s.*", wordPart), "i")), WordArticle.class, collection);
     }
 
