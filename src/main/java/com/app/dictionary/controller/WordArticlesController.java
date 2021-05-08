@@ -40,14 +40,20 @@ public class WordArticlesController {
     }
 
     @GetMapping("/{firstLanguage}/{secondLanguage}/prefix/{wordPrefix}")
-    List<WordArticle> findByUkrainianWordStartingWith(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPrefix) {
+    List<WordArticle> findByWordStartingWith(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPrefix) {
         return wordArticleService.findByWordStartWith(wordPrefix, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
 
     @GetMapping("/{firstLanguage}/{secondLanguage}/search/{searchLanguage}/{wordPart}")
-    List<WordArticle> findByUkrainianWordContains(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPart, @PathVariable String searchLanguage) {
-        //todo check that searchLanguage is first or second language and search by first language words or second language words
-        return wordArticleService.findByWordContains(wordPart, new WordArticleLanguages(firstLanguage, secondLanguage));
+    List<WordArticle> findByWordsContain(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPart, @PathVariable String searchLanguage) {
+        WordArticleLanguages languages = new WordArticleLanguages(firstLanguage, secondLanguage);
+        if (searchLanguage.equalsIgnoreCase(firstLanguage)) {
+            return wordArticleService.findByWordContains(wordPart, languages);
+        } else if (searchLanguage.equalsIgnoreCase(secondLanguage)) {
+            return wordArticleService.findByOtherLanguageWordsContains(wordPart, languages);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't determine querying language.");
+        }
     }
 
     @GetMapping("/{firstLanguage}/{secondLanguage}")
