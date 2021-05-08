@@ -1,36 +1,21 @@
 package com.app.dictionary.model;
 
+import lombok.Data;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "word_definition")
+@Data
 public class WordDefinition {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    @Column(name = "definition", nullable = false)
     private String definition;
-
-    @Nullable
-    @Column(name = "example")
     private String example;
-
-    @Nullable
-    @Column(name = "stylisticMeaning")
     private String stylisticMeaning;
 
     /**
      * `*` next to definition number means true.
      */
-    @Column(name = "idiosyncraticMeaning")
     private boolean idiosyncraticMeaning;
-
-    @OneToMany(cascade = CascadeType.ALL)
     private List<EquivalentWordDefinition> equivalentDefinitions;
 
     public WordDefinition() {
@@ -43,51 +28,5 @@ public class WordDefinition {
     public WordDefinition(String definition, @Nullable String example) {
         this.definition = definition;
         this.example = example;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    @Nullable
-    public String getExample() {
-        return example;
-    }
-
-    public void setExample(@Nullable String example) {
-        this.example = example;
-    }
-
-    @Nullable
-    public String getStylisticMeaning() {
-        return stylisticMeaning;
-    }
-
-    public void setStylisticMeaning(@Nullable String stylisticMeaning) {
-        this.stylisticMeaning = stylisticMeaning;
-    }
-
-    public boolean isIdiosyncraticMeaning() {
-        return idiosyncraticMeaning;
-    }
-
-    public void setIdiosyncraticMeaning(boolean idiosyncraticMeaning) {
-        this.idiosyncraticMeaning = idiosyncraticMeaning;
-    }
-
-    public List<EquivalentWordDefinition> getEquivalentDefinitions() {
-        return equivalentDefinitions;
-    }
-
-    public void setEquivalentDefinitions(List<EquivalentWordDefinition> equivalentDefinitions) {
-        this.equivalentDefinitions = equivalentDefinitions;
     }
 }

@@ -19,52 +19,47 @@ public class DictionariesController {
         this.dictionaryService = dictionaryService;
     }
 
-    @PostMapping("/")
-    void save(@RequestBody List<WordDTO> words) {
-        dictionaryService.save(new DictionaryDTO(words));
+    @PostMapping("/{firstLanguage}/{secondLanguage}")
+    void save(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @RequestBody List<WordDTO> words) {
+        dictionaryService.save(new DictionaryDTO(words), firstLanguage, secondLanguage);
     }
 
-    @GetMapping("/{id}")
-    Optional<DictionaryDTO> findById(@PathVariable long id) {
-        return dictionaryService.findById(id).map(DictionaryDTO::from);
+    @GetMapping("/{firstLanguage}/{secondLanguage}/{id}")
+    Optional<DictionaryDTO> findById(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id) {
+        return dictionaryService.findById(id, firstLanguage, secondLanguage).map(DictionaryDTO::from);
     }
 
     //todo validate
-    @PutMapping("/{id}")
-    DictionaryDTO update(@PathVariable long id, @RequestBody List<WordDTO> words) {
+    //todo can languages be obtained from object?
+    @PutMapping("/{firstLanguage}/{secondLanguage}/{id}")
+    DictionaryDTO update(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id, @RequestBody List<WordDTO> words) {
         DictionaryDTO dictionaryDTO = new DictionaryDTO(words);
         dictionaryDTO.setId(id);
-        return DictionaryDTO.from(dictionaryService.update(dictionaryDTO.toDictionary()));
+        return DictionaryDTO.from(dictionaryService.update(dictionaryDTO.toDictionary(), firstLanguage, secondLanguage));
     }
 
     //todo replace hardcoded value with parameter
-    @GetMapping("/ukrainian/{wordPrefix}")
-    List<DictionaryDTO> findByUkrainianWordStartingWith(@PathVariable String wordPrefix) {
-        List<Dictionary> byPrefix = dictionaryService.findByUkrainianWordStartingWith(wordPrefix);
+    @GetMapping("/{firstLanguage}/{secondLanguage}/prefix/{wordPrefix}")
+    List<DictionaryDTO> findByUkrainianWordStartingWith(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPrefix) {
+        List<Dictionary> byPrefix = dictionaryService.findByUkrainianWordStartingWith(wordPrefix, firstLanguage, secondLanguage);
         return byPrefix.stream().map(DictionaryDTO::from).collect(Collectors.toList());
     }
 
     //todo replace hardcoded value with parameter
-    @GetMapping("/german/{wordPrefix}")
-    List<DictionaryDTO> findByGermanWordStartingWith(@PathVariable String wordPrefix) {
-        List<Dictionary> byPrefix = dictionaryService.findByGermanWordStartingWith(wordPrefix);
+    @GetMapping("/{firstLanguage}/{secondLanguage}/search/{searchLanguage}/{wordPart}")
+    List<DictionaryDTO> findByUkrainianWordContains(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPart, @PathVariable String searchLanguage) {
+        //todo check that searchLanguage is first or second language and search by first language words or second language words
+        List<Dictionary> byPrefix = dictionaryService.findByUkrainianWordContains(wordPart, firstLanguage, secondLanguage);
         return byPrefix.stream().map(DictionaryDTO::from).collect(Collectors.toList());
     }
 
-    //todo replace hardcoded value with parameter
-    @GetMapping("/ukrainian/search/{wordPart}")
-    List<DictionaryDTO> findByUkrainianWordContains(@PathVariable String wordPart) {
-        List<Dictionary> byPrefix = dictionaryService.findByUkrainianWordContains(wordPart);
-        return byPrefix.stream().map(DictionaryDTO::from).collect(Collectors.toList());
+    @GetMapping("/{firstLanguage}/{secondLanguage}")
+    List<DictionaryDTO> findAll(@PathVariable String firstLanguage, @PathVariable String secondLanguage) {
+        return dictionaryService.findAll(firstLanguage, secondLanguage);
     }
 
-    @GetMapping("/")
-    List<DictionaryDTO> findAll() {
-        return dictionaryService.findAll();
-    }
-
-    @DeleteMapping("/{id}")
-    public void remove(@PathVariable Long id) {
-        dictionaryService.remove(id);
+    @DeleteMapping("/{firstLanguage}/{secondLanguage}/{id}")
+    public void remove(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id) {
+        dictionaryService.remove(id, firstLanguage, secondLanguage);
     }
 }

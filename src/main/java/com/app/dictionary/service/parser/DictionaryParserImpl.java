@@ -1,10 +1,11 @@
 package com.app.dictionary.service.parser;
 
-import com.app.dictionary.dao.DictionaryRepository;
+import com.app.dictionary.dao.DictionaryMongoRepository;
 import com.app.dictionary.model.Dictionary;
 import com.app.dictionary.model.UkrainianWord;
 import com.app.dictionary.model.Word;
 import com.google.common.collect.ImmutableList;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +14,14 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
+@RequiredArgsConstructor
 public class DictionaryParserImpl implements DictionaryParser {
 
-    private final DictionaryRepository dictionaryRepository;
     private final WordParser wordParser;
-
-    public DictionaryParserImpl(DictionaryRepository dictionaryRepository, WordParser wordParser) {
-        this.dictionaryRepository = dictionaryRepository;
-        this.wordParser = wordParser;
-    }
+    private final DictionaryMongoRepository dictionaryMongoRepository;
 
     @Override
-    public List<Dictionary> parse(String content) {
+    public List<Dictionary> parse(String content, String firstLanguage, String secondLanguage) {
         List<Dictionary> dictionaries = new ArrayList<>();
         List<WordsParser> dictionaryDefinition = dictionaryDefinition(content);
         for (WordsParser wordDefinitions : dictionaryDefinition) {
@@ -32,7 +29,10 @@ public class DictionaryParserImpl implements DictionaryParser {
             List<UkrainianWord> urkWords = (List) words;
             Dictionary multiLanguageWord = new Dictionary(urkWords, ImmutableList.of());
             dictionaries.add(multiLanguageWord);
-            dictionaryRepository.save(multiLanguageWord);
+            String collection = String.format("%s_%s_articles", firstLanguage, secondLanguage);
+
+
+            dictionaryMongoRepository.save(multiLanguageWord, collection);
         }
         return dictionaries;
     }
