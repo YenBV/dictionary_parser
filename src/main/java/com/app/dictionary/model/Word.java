@@ -6,7 +6,6 @@ import java.util.List;
 
 @Data
 public abstract class Word {
-
     private String word;
     private String morphologyEndings;
     private String morphologyCategory;

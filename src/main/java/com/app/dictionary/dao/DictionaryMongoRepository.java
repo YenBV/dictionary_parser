@@ -3,7 +3,9 @@ package com.app.dictionary.dao;
 import com.app.dictionary.model.Dictionary;
 import com.mongodb.client.result.DeleteResult;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,6 +21,9 @@ public class DictionaryMongoRepository {
     private final MongoTemplate mongoTemplate;
 
     public Dictionary save(Dictionary multiLanguageWord, String collection) {
+        //todo rename fields
+        mongoTemplate.indexOps(collection).ensureIndex(new Index("ukrainianWords.word", Sort.Direction.ASC));
+        mongoTemplate.indexOps(collection).ensureIndex(new Index("germanWords.word", Sort.Direction.ASC));
         return mongoTemplate.save(multiLanguageWord, collection);
     }
 
@@ -32,12 +37,12 @@ public class DictionaryMongoRepository {
     }
 
     public List<Dictionary> findByFirstWordsStartWith(String wordPart, String collection) {
-        return mongoTemplate.find(query(where("ukrainianWords.word").regex(format(".*%s.*", wordPart))), Dictionary.class, collection);
+        return mongoTemplate.find(query(where("ukrainianWords.word").gte(wordPart)), Dictionary.class, collection);
     }
 
     public List<Dictionary> findDictionariesSecondWordsStartWith(String prefix, String collection) {
         //todo replace duplicate
-        return mongoTemplate.find(query(where("germanWords.word").regex(format("%s.*", prefix))), Dictionary.class, collection);
+        return mongoTemplate.find(query(where("germanWords.word").gte(prefix)), Dictionary.class, collection);
     }
 
     public List<Dictionary> findDictionariesSecondWordsContains(String wordPart, String collection) {
