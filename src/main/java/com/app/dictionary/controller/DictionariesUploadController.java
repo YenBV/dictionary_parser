@@ -23,7 +23,7 @@ public class DictionariesUploadController {
         this.parser = parser;
     }
 
-    @PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<Dictionary> handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         try(PDDocument doc = PDDocument.load(file.getInputStream())) {
             String text = new PDFTextStripper().getText(doc);

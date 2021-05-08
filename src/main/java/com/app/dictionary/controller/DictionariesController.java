@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/dictionaries")
 public class DictionariesController {
 
     private final DictionaryService dictionaryService;
