@@ -54,8 +54,9 @@ public class DictionariesController {
     }
 
     //todo replace hardcoded value with parameter
-    @GetMapping("/{firstLanguage}/{secondLanguage}/search/{wordPart}")
-    List<DictionaryDTO> findByUkrainianWordContains(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPart) {
+    @GetMapping("/{firstLanguage}/{secondLanguage}/search/{searchLanguage}/{wordPart}")
+    List<DictionaryDTO> findByUkrainianWordContains(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPart, @PathVariable String searchLanguage) {
+        //todo check that searchLanguage is first or second language and search by first language words or second language words
         List<Dictionary> byPrefix = dictionaryService.findByUkrainianWordContains(wordPart, firstLanguage, secondLanguage);
         return byPrefix.stream().map(DictionaryDTO::from).collect(Collectors.toList());
     }
