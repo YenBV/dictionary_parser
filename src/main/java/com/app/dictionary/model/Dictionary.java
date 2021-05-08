@@ -31,6 +31,10 @@ public class Dictionary {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public List<UkrainianWord> getUkrainianWords() {
         return ukrainianWords;
     }

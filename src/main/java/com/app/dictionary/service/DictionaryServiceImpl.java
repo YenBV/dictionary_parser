@@ -47,8 +47,20 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    public List<Dictionary> findByUkrainianWordContains(String wordPart) {
+        List<UkrainianWord> ukrWords = ukrainianWordService.findByWordContains(wordPart);
+        return dictionaryRepository.findDictionariesByUkrainianWordsIn(ukrWords);
+    }
+
+    @Override
     public List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix) {
         List<GermanWord> germanWords = germanWordService.findByWordStartingWith(germanWordPrefix);
+        return dictionaryRepository.findDictionariesByGermanWordsIn(germanWords);
+    }
+
+    @Override
+    public List<Dictionary> findByGermanWordContains(String wordPart) {
+        List<GermanWord> germanWords = germanWordService.findByWordContains(wordPart);
         return dictionaryRepository.findDictionariesByGermanWordsIn(germanWords);
     }
 
@@ -59,5 +71,15 @@ public class DictionaryServiceImpl implements DictionaryService {
                 .stream()
                 .map(DictionaryDTO::from)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Dictionary update(Dictionary dictionary) {
+        return dictionaryRepository.save(dictionary);
+    }
+
+    @Override
+    public void remove(Long id) {
+        dictionaryRepository.deleteById(id);
     }
 }

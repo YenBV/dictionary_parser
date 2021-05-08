@@ -17,4 +17,12 @@ public interface DictionaryService {
     List<Dictionary> findByGermanWordStartingWith(String germanWordPrefix);
 
     List<DictionaryDTO> findAll();
+
+    Dictionary update(Dictionary dictionary);
+
+    void remove(Long id);
+
+    List<Dictionary> findByUkrainianWordContains(String wordPart);
+
+    List<Dictionary> findByGermanWordContains(String wordPart);
 }
