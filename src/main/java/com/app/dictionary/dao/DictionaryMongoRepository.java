@@ -33,22 +33,22 @@ public class DictionaryMongoRepository {
 
     public List<Dictionary> findByFirstWordsContain(String prefix, String collection) {
         //todo replace hardcode
-        return mongoTemplate.find(query(where("ukrainianWords.word").regex(format(".*%s.*", prefix))), Dictionary.class, collection);
+        return mongoTemplate.find(query(where("ukrainianWords.word").regex(format(".*%s.*", prefix), "i")), Dictionary.class, collection);
     }
 
     public List<Dictionary> findByFirstWordsStartWith(String wordPart, String collection) {
-        return mongoTemplate.find(query(where("ukrainianWords.word").regex(format("%s.*", wordPart))), Dictionary.class, collection);
+        return mongoTemplate.find(query(where("ukrainianWords.word").regex(format("%s.*", wordPart), "i")), Dictionary.class, collection);
     }
 
     public List<Dictionary> findDictionariesSecondWordsStartWith(String prefix, String collection) {
         //todo replace duplicate
-        return mongoTemplate.find(query(where("germanWords.word").regex(format("%s.*", prefix))), Dictionary.class, collection);
+        return mongoTemplate.find(query(where("germanWords.word").regex(format("%s.*", prefix), "i")), Dictionary.class, collection);
     }
 
     public List<Dictionary> findDictionariesSecondWordsContains(String wordPart, String collection) {
         //todo replace duplicate
 
-        return mongoTemplate.find(query(where("germanWords.word").regex(format(".*%s.*", wordPart))), Dictionary.class, collection);
+        return mongoTemplate.find(query(where("germanWords.word").regex(format(".*%s.*", wordPart), "i")), Dictionary.class, collection);
     }
 
     public List<Dictionary> findAll(String collection) {
