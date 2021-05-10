@@ -18,9 +18,9 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class WordDefinitionParserImpl implements WordDefinitionParser {
 
     /**
-     * 0-9[idiosyncraticMeaning].[equalMeaning][word_definition]:[example]-[equivalent_definitions_separated_with_comma].
+     * NUM[idiosyncraticMeaning].[equalMeaning][word_definition]NUM:[example]-[equivalent_definitions_separated_with_comma].
      */
-    private final Pattern DEFINITION_EXAMPLE_EQUIVALENT_DEFINITIONS = Pattern.compile("[0-9]?\\s*(\\*?)\\.?\\s*(=?)\\s*(.*)[0-9]?:\\s*([^-]*)\\s*-?\\s*(.*)");
+    private final Pattern DEFINITION_EXAMPLE_EQUIVALENT_DEFINITIONS = Pattern.compile("[0-9]?\\s*(\\*?)\\.?\\s*(=?)\\s*(.*)\\s[0-9]?:\\s*([^-]*)\\s*-?\\s*(.*)");
 
     @Override
     public WordDefinition parse(String wordDefinitionStr) {
