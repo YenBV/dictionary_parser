@@ -18,13 +18,12 @@ public class WordParserImpl implements WordParser {
     }
 
     @Override
-    public Word parse(String wordStr) {
+    public WordConfiguration parse(String wordStr) {
+        boolean falseParallel = false;
         Word word = new Word();
-
         if (wordStr.startsWith("! ")) {
             wordStr = StringUtils.replace(wordStr, "! ", "");
-            //TODO:2021-05-08:yen: falseParallel
-//            word.setImportant(true);
+            falseParallel = true;
         }
         String[] wordToDef = wordStr.split(",", 2);
         word.setWord(wordToDef[0]);
@@ -34,6 +33,6 @@ public class WordParserImpl implements WordParser {
         word.setMorphologyEndings(typeToDefinition[0]);
         List<WordDefinition> wordDefinitions = wordDefinitionsParser.parse(typeToDefinition[1]);
         word.setDefinitions(wordDefinitions);
-        return word;
+        return new WordConfiguration(word, falseParallel);
     }
 }
