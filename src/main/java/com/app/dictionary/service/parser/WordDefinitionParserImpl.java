@@ -22,8 +22,9 @@ public class WordDefinitionParserImpl implements WordDefinitionParser {
         if (wordDefinition.startsWith(".")) {
             wordDefinition = wordDefinition.substring(1).trim();
         }
+        //TODO:2021-05-09:yen: look at `=`
         //definition `1:` example. or definition `:` example.
-        String[] definitionToExample = wordDefinition.split("[0,9]?:");
+        String[] definitionToExample = wordDefinition.split("[0-9]?:");
         if (definitionToExample.length >= 1) {
             def.setDefinition(definitionToExample[0]);
         }

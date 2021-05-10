@@ -25,7 +25,7 @@ public class DictionaryParserImpl implements DictionaryParser {
         for (WordsParser wordDefinitions : dictionaryDefinition) {
             List<Word> words = wordDefinitions.parseWords(wordParser);
             //TODO:2021-05-08:yen: check it
-            WordArticle multiLanguageWord = new WordArticle(words.get(0), words);
+            WordArticle multiLanguageWord = new WordArticle(words.get(0), words.subList(1, words.size()));
             dictionaries.add(multiLanguageWord);
             String collection = String.format("%s_%s_articles", firstLanguage, secondLanguage);
 
@@ -57,7 +57,7 @@ public class DictionaryParserImpl implements DictionaryParser {
                 }
                 wordDefBuilder = new StringBuilder();
             }
-            wordDefBuilder.append(pureLine);
+            wordDefBuilder.append(pureLine).append(" ");
         }
         wordDefinitions.add(wordDefBuilder.toString());
         result.add(new WordsParser(wordDefinitions));
