@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ${springboot.app.name:dictionary-parser}
+    name: ${springboot.app.name:word-articles}
   cloud:
     service-registry:
       auto-registration:
