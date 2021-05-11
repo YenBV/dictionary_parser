@@ -3,6 +3,7 @@ package com.app.dictionary.service;
 import com.app.dictionary.dao.WordArticleMongoRepository;
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.util.WordUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class WordArticleServiceImpl implements WordArticleService {
     @Override
     public void save(WordArticle wordArticle, WordArticleLanguages languages) {
         String collection = toCollectionName(languages);
+
+        wordArticle.getWord().setNgrams(WordUtils.getNgramsForWord(wordArticle.getWord().getWord()));
+        wordArticle.getOtherLanguageWords().forEach(it -> it.setNgrams(WordUtils.getNgramsForWord(it.getWord())));
+
         wordArticleMongoRepository.save(wordArticle, collection);
     }
 
@@ -30,6 +35,7 @@ public class WordArticleServiceImpl implements WordArticleService {
     @Override
     public List<WordArticle> findByWordStartWith(String uaWordPrefix, WordArticleLanguages languages) {
         String collection = toCollectionName(languages);
+
         return wordArticleMongoRepository.findByWordStartWith(uaWordPrefix, collection);
     }
 
@@ -52,6 +58,12 @@ public class WordArticleServiceImpl implements WordArticleService {
     }
 
     @Override
+    public List<WordArticle> findByWordPart(WordArticleLanguages languages, String wordPart) {
+        String collection = toCollectionName(languages);
+        return wordArticleMongoRepository.findByWordPart(wordPart, collection);
+    }
+
+    @Override
     public List<WordArticle> findAll(WordArticleLanguages languages) {
         String collection = toCollectionName(languages);
         return wordArticleMongoRepository.findAll(collection);
@@ -60,6 +72,10 @@ public class WordArticleServiceImpl implements WordArticleService {
     @Override
     public WordArticle update(WordArticle wordArticle, WordArticleLanguages languages) {
         String collection = toCollectionName(languages);
+
+        wordArticle.getWord().setNgrams(WordUtils.getNgramsForWord(wordArticle.getWord().getWord().toLowerCase()));
+        wordArticle.getOtherLanguageWords().forEach(it -> it.setNgrams(WordUtils.getNgramsForWord(it.getWord().toLowerCase())));
+
         return wordArticleMongoRepository.save(wordArticle, collection);
     }
 

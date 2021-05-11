@@ -1,10 +1,13 @@
 package com.app.dictionary.model;
 
+import com.app.dictionary.view.WordArticleView;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@JsonView(WordArticleView.Common.class)
 public class WordArticle {
     private String id;
     private Word word;

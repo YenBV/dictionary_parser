@@ -25,4 +25,6 @@ public interface WordArticleService {
     List<WordArticle> findByWordContains(String wordPart, WordArticleLanguages languages);
 
     List<WordArticle> findByOtherLanguageWordsContains(String wordPart, WordArticleLanguages languages);
+
+    List<WordArticle> findByWordPart(WordArticleLanguages languages, String wordPart);
 }
