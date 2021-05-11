@@ -2,48 +2,49 @@ package com.app.dictionary.service.parser;
 
 import com.app.dictionary.model.EquivalentWordDefinition;
 import com.app.dictionary.model.WordDefinition;
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Service
 public class WordDefinitionParserImpl implements WordDefinitionParser {
 
+    /**
+     * NUM[idiosyncraticMeaning].[equalMeaning][word_definition]NUM:[example]-[equivalent_definitions_separated_with_comma].
+     */
+    private final Pattern DEFINITION_EXAMPLE_EQUIVALENT_DEFINITIONS = Pattern.compile("[0-9]?\\s*(\\*?)\\.?\\s*(=?)\\s*(.*)\\s[0-9]?:\\s*([^-]*)\\s*-?\\s*(.*)");
+
     @Override
-    public WordDefinition parse(String wordDefinition) {
-        WordDefinition def = new WordDefinition();
-        //* at the begining of the definition means idiosyncraticMeaning true
-        if (wordDefinition.startsWith("*")) {
-            def.setIdiosyncraticMeaning(true);
-            wordDefinition = wordDefinition.substring(1);
+    public WordDefinition parse(String wordDefinitionStr) {
+        WordDefinition wordDefinition = new WordDefinition();
+        Matcher matcher = DEFINITION_EXAMPLE_EQUIVALENT_DEFINITIONS.matcher(wordDefinitionStr);
+        if (matcher.find()) {
+            wordDefinition.setIdiosyncraticMeaning(isNotBlank(matcher.group(1)));
+            wordDefinition.setEqualMeaning(isNotBlank(matcher.group(2)));
+            //TODO:2021-05-09:yen: take a look at stylistic marker. E.g. `мат`
+//            wordDefinition.setStylisticMarker();
+            wordDefinition.setDefinition(matcher.group(3));
+            wordDefinition.setExample(matcher.group(4));
+            wordDefinition.setEquivalentDefinitions(equivalentWordDefinitions(matcher.group(5)));
         }
-        if (wordDefinition.startsWith(".")) {
-            wordDefinition = wordDefinition.substring(1).trim();
+        return wordDefinition;
+    }
+
+    private List<EquivalentWordDefinition> equivalentWordDefinitions(String equivalentDefinitions) {
+        if (StringUtils.isBlank(equivalentDefinitions)) {
+            return ImmutableList.of();
         }
-        //definition `1:` example. or definition `:` example.
-        String[] definitionToExample = wordDefinition.split("[0,9]?:");
-        if (definitionToExample.length >= 1) {
-            def.setDefinition(definitionToExample[0]);
-        }
-        if (definitionToExample.length == 2) {
-            String example = definitionToExample[1];
-            //example `-` additional definitions.
-            String[] exampleToAdditionalDefs = example.split("-");
-            if (exampleToAdditionalDefs.length >= 1) {
-                def.setExample(exampleToAdditionalDefs[0]);
-            }
-            if (exampleToAdditionalDefs.length == 2) {
-                String additionalDefs = exampleToAdditionalDefs[1];
-                List<EquivalentWordDefinition> equivalentWordDefinitions = Arrays.stream(additionalDefs.split(",")).map(a -> {
-                    EquivalentWordDefinition equivalentWordDefinition = new EquivalentWordDefinition();
-                    equivalentWordDefinition.setDefinition(a.trim());
-                    return equivalentWordDefinition;
-                }).collect(Collectors.toList());
-                def.setEquivalentDefinitions(equivalentWordDefinitions);
-            }
-        }
-        return def;
+        return Arrays.stream(equivalentDefinitions.split(","))
+                //TODO:2021-05-10:yen: checkout preceding comment
+                .map(definition -> new EquivalentWordDefinition(null, definition))
+                .collect(Collectors.toList());
     }
 }

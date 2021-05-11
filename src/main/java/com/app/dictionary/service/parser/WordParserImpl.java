@@ -6,10 +6,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class WordParserImpl implements WordParser {
-
+    /**
+     * [word],[morphology]:[word_definition]
+     */
+    private static final Pattern WORD_MORPHOLOGY_DEFINITION = Pattern.compile("([^,]*),\\s+([^:]*):\\s*(.*)");
     private final WordDefinitionsParser wordDefinitionsParser;
 
     public WordParserImpl(
@@ -18,22 +23,21 @@ public class WordParserImpl implements WordParser {
     }
 
     @Override
-    public Word parse(String wordStr) {
+    public WordConfiguration parse(String wordStr) {
+        boolean falseParallel = false;
         Word word = new Word();
-
         if (wordStr.startsWith("! ")) {
             wordStr = StringUtils.replace(wordStr, "! ", "");
-            //TODO:2021-05-08:yen: falseParallel
-//            word.setImportant(true);
+            falseParallel = true;
         }
-        String[] wordToDef = wordStr.split(",", 2);
-        word.setWord(wordToDef[0]);
-        String def = wordToDef[1];
-        String[] typeToDefinition = def.split(":", 2);
-        //TODO:2021-04-10:yen: checkout prefixes
-        word.setMorphologyEndings(typeToDefinition[0]);
-        List<WordDefinition> wordDefinitions = wordDefinitionsParser.parse(typeToDefinition[1]);
-        word.setDefinitions(wordDefinitions);
-        return word;
+        Matcher matcher = WORD_MORPHOLOGY_DEFINITION.matcher(wordStr);
+        if (matcher.matches()) {
+            word.setWord(matcher.group(1));
+            //TODO:2021-04-10:yen: checkout morphology
+            word.setMorphologyEndings(matcher.group(2));
+            List<WordDefinition> wordDefinitions = wordDefinitionsParser.parse(matcher.group(3));
+            word.setDefinitions(wordDefinitions);
+        }
+        return new WordConfiguration(word, falseParallel);
     }
 }

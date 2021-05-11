@@ -17,10 +17,41 @@ public class WordArticle {
     public WordArticle() {
     }
 
-    public WordArticle(
-            Word word,
-            List<Word> otherLanguageWords) {
-        this.otherLanguageWords = otherLanguageWords;
-        this.word = word;
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public WordArticle(Builder builder) {
+        this.word = builder.word;
+        this.otherLanguageWords = builder.otherLanguageWords;
+        this.falseParallel = builder.falseParallel;
+    }
+
+    public static final class Builder {
+        private Word word;
+        private List<Word> otherLanguageWords;
+        private boolean falseParallel;
+
+        private Builder() {
+        }
+
+        public Builder setWord(Word word) {
+            this.word = word;
+            return this;
+        }
+
+        public Builder setOtherLanguageWords(List<Word> otherLanguageWords) {
+            this.otherLanguageWords = otherLanguageWords;
+            return this;
+        }
+
+        public Builder setFalseParallel(boolean falseParallel) {
+            this.falseParallel = falseParallel;
+            return this;
+        }
+
+        public WordArticle build() {
+            return new WordArticle(this);
+        }
     }
 }
