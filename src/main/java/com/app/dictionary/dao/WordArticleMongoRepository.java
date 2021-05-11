@@ -1,6 +1,7 @@
 package com.app.dictionary.dao;
 
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.util.WordUtils;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
@@ -83,5 +84,24 @@ public class WordArticleMongoRepository {
 
     private void selectFieldsForSearch(Query basicQuery) {
         basicQuery.fields().slice("word.definitions", 1).slice("otherLanguageWords.definitions", 1);
+    }
+
+    public Optional<WordArticleWithCloseWords> findByIdWithCloseWords(String id, String collection) {
+        WordArticle wordArticle = mongoTemplate.findById(id, WordArticle.class, collection);
+        if (wordArticle == null) {
+            return Optional.empty();
+        }
+
+        Query queryLeftWord = query(where("word.word").lt(wordArticle.getWord().getWord())).with(Sort.by(Sort.Direction.DESC, "word.word")).limit(1);
+        queryLeftWord.fields().include("word.word");
+        WordArticle leftWordAsArticle = mongoTemplate.findOne(queryLeftWord, WordArticle.class, collection);
+
+        Query queryRightWord = query(where("word.word").gt(wordArticle.getWord().getWord())).with(Sort.by(Sort.Direction.ASC, "word.word")).limit(1);
+        queryRightWord.fields().include("word.word");
+        WordArticle rightWordAsArticle = mongoTemplate.findOne(queryRightWord, WordArticle.class, collection);
+
+        WordArticleWithCloseWords word = new WordArticleWithCloseWords(leftWordAsArticle, wordArticle, rightWordAsArticle);
+
+        return Optional.of(word);
     }
 }

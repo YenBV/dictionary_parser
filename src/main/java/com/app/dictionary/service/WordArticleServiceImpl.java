@@ -3,6 +3,7 @@ package com.app.dictionary.service;
 import com.app.dictionary.dao.WordArticleMongoRepository;
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.util.WordUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,12 @@ public class WordArticleServiceImpl implements WordArticleService {
     public List<WordArticle> findByWordPart(WordArticleLanguages languages, String wordPart) {
         String collection = toCollectionName(languages);
         return wordArticleMongoRepository.findByWordPart(wordPart, collection);
+    }
+
+    @Override
+    public Optional<WordArticleWithCloseWords> findByIdWithClearWords(String id, WordArticleLanguages articleLanguages) {
+        String collection = toCollectionName(articleLanguages);
+        return wordArticleMongoRepository.findByIdWithCloseWords(id, collection);
     }
 
     @Override

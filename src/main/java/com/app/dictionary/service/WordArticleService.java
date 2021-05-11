@@ -2,6 +2,7 @@ package com.app.dictionary.service;
 
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.model.WordArticleWithCloseWords;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +28,6 @@ public interface WordArticleService {
     List<WordArticle> findByOtherLanguageWordsContains(String wordPart, WordArticleLanguages languages);
 
     List<WordArticle> findByWordPart(WordArticleLanguages languages, String wordPart);
+
+    Optional<WordArticleWithCloseWords> findByIdWithClearWords(String id, WordArticleLanguages articleLanguages);
 }

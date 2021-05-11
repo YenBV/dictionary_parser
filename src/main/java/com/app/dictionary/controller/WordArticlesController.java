@@ -2,6 +2,7 @@ package com.app.dictionary.controller;
 
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.service.WordArticleService;
 import com.app.dictionary.view.WordArticleView;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -34,8 +35,15 @@ public class WordArticlesController {
     }
 
     @GetMapping("/{firstLanguage}/{secondLanguage}/{id}")
-    Optional<WordArticle> findById(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id) {
+    Optional<WordArticle> findById(@PathVariable String firstLanguage, @PathVariable String secondLanguage,
+                                   @PathVariable String id) {
         return wordArticleService.findById(id, new WordArticleLanguages(firstLanguage, secondLanguage));
+    }
+
+    @GetMapping("/{firstLanguage}/{secondLanguage}/{id}/with-close-words")
+    Optional<WordArticleWithCloseWords> findByIdWithCloseWords(@PathVariable String firstLanguage, @PathVariable String secondLanguage,
+                                                               @PathVariable String id) {
+        return wordArticleService.findByIdWithClearWords(id, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
 
     @PutMapping("/{firstLanguage}/{secondLanguage}/{id}")
