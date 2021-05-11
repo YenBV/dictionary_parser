@@ -1,10 +1,12 @@
 package com.app.dictionary.dao;
 
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.model.WordArticleSearchResult;
 import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.util.WordUtils;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
@@ -44,23 +46,32 @@ public class WordArticleMongoRepository {
         return Optional.ofNullable(mongoTemplate.findById(id, WordArticle.class, collection));
     }
 
-    public List<WordArticle> findByWordContains(String prefix, String collection) {
-        return mongoTemplate.find(query(where("word.word").regex(format(".*%s.*", prefix), "i")), WordArticle.class, collection);
-    }
-
-    public List<WordArticle> findByWordStartWith(String wordPart, String collection) {
-        Query query = query(where("word.word").regex(format("%s.*", wordPart), "i"));
+    public WordArticleSearchResult findByWordStartWith(String wordPart, String collection, PageRequest pageRequest) {
+        Query query = query(where("word.word").regex(format("^%s.*", wordPart), "i"));
         selectFieldsForSearch(query);
 
-        return mongoTemplate.find(query, WordArticle.class, collection);
+        List<WordArticle> wordArticles = mongoTemplate.find(Query.of(query).with(pageRequest), WordArticle.class, collection);
+        long count = mongoTemplate.count(query, collection);
+        return new WordArticleSearchResult(wordArticles, count);
     }
 
-    public List<WordArticle> findByOtherLanguageWordsStartWith(String prefix, String collection) {
-        return mongoTemplate.find(query(where("otherLanguageWords.word").regex(format("%s.*", prefix), "i")), WordArticle.class, collection);
+    public WordArticleSearchResult findByOtherLanguageWordsStartWith(String prefix, String collection, PageRequest pageRequest) {
+        Query query = query(where("otherLanguageWords.word").regex(format("^%s.*", prefix), "i"));
+        List<WordArticle> wordArticles = mongoTemplate.find(Query.of(query).with(pageRequest), WordArticle.class, collection);
+        long count = mongoTemplate.count(query, collection);
+        return new WordArticleSearchResult(wordArticles, count);
     }
 
-    public List<WordArticle> findByOtherLanguageWordsContains(String wordPart, String collection) {
-        return mongoTemplate.find(query(where("otherLanguageWords.word").regex(format(".*%s.*", wordPart), "i")), WordArticle.class, collection);
+    public WordArticleSearchResult findByWordPart(String wordPart, String collection, PageRequest pageRequest) {
+        String wordForSearch = wordPart.toLowerCase();
+
+        BasicQuery basicQuery = getSearchByWordQuery(wordForSearch);
+        basicQuery.setSortObject(Document.parse("{score:{$meta:\"textScore\"}}"));
+        selectFieldsForSearch(basicQuery);
+
+        List<WordArticle> wordArticles = mongoTemplate.find(Query.of(basicQuery).with(pageRequest), WordArticle.class, collection);
+        long count = mongoTemplate.count(basicQuery, collection);
+        return new WordArticleSearchResult(wordArticles, count);
     }
 
     public List<WordArticle> findAll(String collection) {
@@ -71,15 +82,9 @@ public class WordArticleMongoRepository {
         mongoTemplate.remove(query(where("_id").is(id)), collection);
     }
 
-    public List<WordArticle> findByWordPart(String wordPart, String collection) {
-        String wordForSearch = wordPart.toLowerCase();
-
+    private BasicQuery getSearchByWordQuery(String wordForSearch) {
         String query = format("{$or: [{\"word.word\":{$regex: \".*%s.*\", $options: \"i\"}}, {\"otherLanguageWords.word\":{$regex: \".*%s.*\", $options: \"i\"}}, {$text: {$search: \"%s\"}}]}", wordForSearch, wordForSearch, WordUtils.getNgramsForWord(wordForSearch));
-        BasicQuery basicQuery = new BasicQuery(query);
-        basicQuery.setSortObject(Document.parse("{score:{$meta:\"textScore\"}}"));
-        selectFieldsForSearch(basicQuery);
-
-        return mongoTemplate.find(basicQuery, WordArticle.class, collection);
+        return new BasicQuery(query);
     }
 
     private void selectFieldsForSearch(Query basicQuery) {

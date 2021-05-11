@@ -2,6 +2,7 @@ package com.app.dictionary.service;
 
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.model.WordArticleSearchResult;
 import com.app.dictionary.model.WordArticleWithCloseWords;
 
 import java.util.List;
@@ -13,9 +14,9 @@ public interface WordArticleService {
 
     Optional<WordArticle> findById(String id, WordArticleLanguages languages);
 
-    List<WordArticle> findByWordStartWith(String uaWordPrefix, WordArticleLanguages languages);
+    WordArticleSearchResult findByOtherLanguageWordsStartWith(String germanWordPrefix, WordArticleLanguages languages, int pageSize, int pageNumber);
 
-    List<WordArticle> findByOtherLanguageWordsStartWith(String germanWordPrefix, WordArticleLanguages languages);
+    WordArticleSearchResult findByWordStartWith(String uaWordPrefix, WordArticleLanguages languages, int pageSize, int pageNumber);
 
     List<WordArticle> findAll(WordArticleLanguages languages);
 
@@ -23,11 +24,7 @@ public interface WordArticleService {
 
     void remove(String id, WordArticleLanguages languages);
 
-    List<WordArticle> findByWordContains(String wordPart, WordArticleLanguages languages);
-
-    List<WordArticle> findByOtherLanguageWordsContains(String wordPart, WordArticleLanguages languages);
-
-    List<WordArticle> findByWordPart(WordArticleLanguages languages, String wordPart);
+    WordArticleSearchResult findByWordPart(WordArticleLanguages languages, String wordPart, int pageSize, int pageNumber);
 
     Optional<WordArticleWithCloseWords> findByIdWithClearWords(String id, WordArticleLanguages articleLanguages);
 }

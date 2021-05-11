@@ -3,9 +3,11 @@ package com.app.dictionary.service;
 import com.app.dictionary.dao.WordArticleMongoRepository;
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.model.WordArticleSearchResult;
 import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.util.WordUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,34 +36,24 @@ public class WordArticleServiceImpl implements WordArticleService {
     }
 
     @Override
-    public List<WordArticle> findByWordStartWith(String uaWordPrefix, WordArticleLanguages languages) {
+    public WordArticleSearchResult findByWordStartWith(String uaWordPrefix, WordArticleLanguages languages, int pageSize, int pageNumber) {
         String collection = toCollectionName(languages);
-
-        return wordArticleMongoRepository.findByWordStartWith(uaWordPrefix, collection);
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        return wordArticleMongoRepository.findByWordStartWith(uaWordPrefix, collection, pageRequest);
     }
 
     @Override
-    public List<WordArticle> findByWordContains(String wordPart, WordArticleLanguages languages) {
+    public WordArticleSearchResult findByOtherLanguageWordsStartWith(String germanWordPrefix, WordArticleLanguages languages, int pageSize, int pageNumber) {
         String collection = toCollectionName(languages);
-        return wordArticleMongoRepository.findByWordContains(wordPart, collection);
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        return wordArticleMongoRepository.findByOtherLanguageWordsStartWith(germanWordPrefix, collection, pageRequest);
     }
 
     @Override
-    public List<WordArticle> findByOtherLanguageWordsStartWith(String germanWordPrefix, WordArticleLanguages languages) {
+    public WordArticleSearchResult findByWordPart(WordArticleLanguages languages, String wordPart, int pageSize, int pageNumber) {
         String collection = toCollectionName(languages);
-        return wordArticleMongoRepository.findByOtherLanguageWordsStartWith(germanWordPrefix, collection);
-    }
-
-    @Override
-    public List<WordArticle> findByOtherLanguageWordsContains(String wordPart, WordArticleLanguages languages) {
-        String collection = toCollectionName(languages);
-        return wordArticleMongoRepository.findByOtherLanguageWordsContains(wordPart, collection);
-    }
-
-    @Override
-    public List<WordArticle> findByWordPart(WordArticleLanguages languages, String wordPart) {
-        String collection = toCollectionName(languages);
-        return wordArticleMongoRepository.findByWordPart(wordPart, collection);
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        return wordArticleMongoRepository.findByWordPart(wordPart, collection, pageRequest);
     }
 
     @Override

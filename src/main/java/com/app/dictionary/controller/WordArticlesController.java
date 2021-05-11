@@ -2,6 +2,7 @@ package com.app.dictionary.controller;
 
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.model.WordArticleSearchResult;
 import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.service.WordArticleService;
 import com.app.dictionary.view.WordArticleView;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -56,15 +58,28 @@ public class WordArticlesController {
 
     @JsonView(WordArticleView.Common.class)
     @GetMapping("/{firstLanguage}/{secondLanguage}/prefix/{wordPrefix}")
-    List<WordArticle> findByWordStartingWith(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPrefix) {
-        return wordArticleService.findByWordStartWith(wordPrefix, new WordArticleLanguages(firstLanguage, secondLanguage));
+    WordArticleSearchResult findByWordStartingWith(@PathVariable String firstLanguage,
+                                                   @PathVariable String secondLanguage,
+                                                   @PathVariable String wordPrefix,
+                                                   @RequestParam int pageSize,
+                                                   @RequestParam int pageNumber,
+                                                   @RequestParam(required = false) Boolean isSecondLanguage) {
+        if (Boolean.TRUE.equals(isSecondLanguage)) {
+            return wordArticleService.findByOtherLanguageWordsStartWith(wordPrefix, new WordArticleLanguages(firstLanguage, secondLanguage), pageSize, pageNumber);
+        }
+        return wordArticleService.findByWordStartWith(wordPrefix, new WordArticleLanguages(firstLanguage, secondLanguage), pageSize, pageNumber);
     }
 
     @JsonView(WordArticleView.Common.class)
     @GetMapping("/{firstLanguage}/{secondLanguage}/search/{wordPart}")
-    List<WordArticle> findByWordsContain(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String wordPart) {
+    WordArticleSearchResult findByWordsContain(@PathVariable String firstLanguage,
+                                               @PathVariable String secondLanguage,
+                                               @PathVariable String wordPart,
+                                               @RequestParam int pageSize,
+                                               @RequestParam int pageNumber) {
+
         WordArticleLanguages languages = new WordArticleLanguages(firstLanguage, secondLanguage);
-        return wordArticleService.findByWordPart(languages, wordPart);
+        return wordArticleService.findByWordPart(languages, wordPart, pageSize, pageNumber);
     }
 
     @GetMapping("/{firstLanguage}/{secondLanguage}")
