@@ -8,6 +8,7 @@ import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.util.WordUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,14 +39,14 @@ public class WordArticleServiceImpl implements WordArticleService {
     @Override
     public WordArticleSearchResult findByWordStartWith(String uaWordPrefix, WordArticleLanguages languages, int pageSize, int pageNumber) {
         String collection = toCollectionName(languages);
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "word.word"));
         return wordArticleMongoRepository.findByWordStartWith(uaWordPrefix, collection, pageRequest);
     }
 
     @Override
     public WordArticleSearchResult findByOtherLanguageWordsStartWith(String germanWordPrefix, WordArticleLanguages languages, int pageSize, int pageNumber) {
         String collection = toCollectionName(languages);
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "word.word"));
         return wordArticleMongoRepository.findByOtherLanguageWordsStartWith(germanWordPrefix, collection, pageRequest);
     }
 

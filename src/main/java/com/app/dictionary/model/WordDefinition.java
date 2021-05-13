@@ -5,13 +5,17 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
 @JsonView(WordArticleView.Common.class)
 public class WordDefinition {
 
+    @NotBlank
     private String definition;
+
+    @NotBlank
     private String example;
     private String stylisticMarker;
 

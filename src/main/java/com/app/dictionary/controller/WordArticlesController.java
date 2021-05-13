@@ -7,6 +7,7 @@ import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.service.WordArticleService;
 import com.app.dictionary.view.WordArticleView;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,20 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 public class WordArticlesController {
 
     private final WordArticleService wordArticleService;
 
-    public WordArticlesController(WordArticleService wordArticleService) {
-        this.wordArticleService = wordArticleService;
-    }
-
     @PostMapping("/{firstLanguage}/{secondLanguage}")
-    void save(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @RequestBody WordArticle wordArticle) {
+    void save(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @Valid @RequestBody WordArticle wordArticle) {
         wordArticleService.save(wordArticle, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
 
@@ -49,7 +48,7 @@ public class WordArticlesController {
     }
 
     @PutMapping("/{firstLanguage}/{secondLanguage}/{id}")
-    WordArticle update(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id, @RequestBody WordArticle wordArticle) {
+    WordArticle update(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id, @RequestBody @Valid WordArticle wordArticle) {
         if (!StringUtils.equals(id, wordArticle.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id didn't match");
         }

@@ -66,7 +66,7 @@ public class WordArticleMongoRepository {
         String wordForSearch = wordPart.toLowerCase();
 
         BasicQuery basicQuery = getSearchByWordQuery(wordForSearch);
-        basicQuery.setSortObject(Document.parse("{score:{$meta:\"textScore\"}}"));
+        basicQuery.setSortObject(Document.parse("{score:{$meta:\"textScore\"}, \"word.word\": 1}"));
         selectFieldsForSearch(basicQuery);
 
         List<WordArticle> wordArticles = mongoTemplate.find(Query.of(basicQuery).with(pageRequest), WordArticle.class, collection);

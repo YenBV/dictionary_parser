@@ -4,13 +4,18 @@ import com.app.dictionary.view.WordArticleView;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Data
 @JsonView(WordArticleView.Common.class)
 public class WordArticle {
     private String id;
+
+    @Valid
     private Word word;
+
+    @Valid
     private List<Word> otherLanguageWords;
     private boolean falseParallel;
 
