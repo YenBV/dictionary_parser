@@ -30,24 +30,24 @@ public class WordArticlesController {
 
     private final WordArticleService wordArticleService;
 
-    @PostMapping("/{firstLanguage}/{secondLanguage}")
+    @PostMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}")
     void save(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @Valid @RequestBody WordArticle wordArticle) {
         wordArticleService.save(wordArticle, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
 
-    @GetMapping("/{firstLanguage}/{secondLanguage}/{id}")
+    @GetMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}/{id}")
     Optional<WordArticle> findById(@PathVariable String firstLanguage, @PathVariable String secondLanguage,
                                    @PathVariable String id) {
         return wordArticleService.findById(id, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
 
-    @GetMapping("/{firstLanguage}/{secondLanguage}/{id}/with-close-words")
+    @GetMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}/{id}/with-close-words")
     Optional<WordArticleWithCloseWords> findByIdWithCloseWords(@PathVariable String firstLanguage, @PathVariable String secondLanguage,
                                                                @PathVariable String id) {
         return wordArticleService.findByIdWithClearWords(id, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
 
-    @PutMapping("/{firstLanguage}/{secondLanguage}/{id}")
+    @PutMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}/{id}")
     WordArticle update(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id, @RequestBody @Valid WordArticle wordArticle) {
         if (!StringUtils.equals(id, wordArticle.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id didn't match");
@@ -56,7 +56,7 @@ public class WordArticlesController {
     }
 
     @JsonView(WordArticleView.Common.class)
-    @GetMapping("/{firstLanguage}/{secondLanguage}/prefix/{wordPrefix}")
+    @GetMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}/prefix/{wordPrefix}")
     WordArticleSearchResult findByWordStartingWith(@PathVariable String firstLanguage,
                                                    @PathVariable String secondLanguage,
                                                    @PathVariable String wordPrefix,
@@ -70,7 +70,7 @@ public class WordArticlesController {
     }
 
     @JsonView(WordArticleView.Common.class)
-    @GetMapping("/{firstLanguage}/{secondLanguage}/search/{wordPart}")
+    @GetMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}/search/{wordPart}")
     WordArticleSearchResult findByWordsContain(@PathVariable String firstLanguage,
                                                @PathVariable String secondLanguage,
                                                @PathVariable String wordPart,
@@ -81,12 +81,12 @@ public class WordArticlesController {
         return wordArticleService.findByWordPart(languages, wordPart, pageSize, pageNumber);
     }
 
-    @GetMapping("/{firstLanguage}/{secondLanguage}")
+    @GetMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}")
     List<WordArticle> findAll(@PathVariable String firstLanguage, @PathVariable String secondLanguage) {
         return wordArticleService.findAll(new WordArticleLanguages(firstLanguage, secondLanguage));
     }
 
-    @DeleteMapping("/{firstLanguage}/{secondLanguage}/{id}")
+    @DeleteMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}/{id}")
     public void remove(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id) {
         wordArticleService.remove(id, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
