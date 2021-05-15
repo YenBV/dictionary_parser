@@ -19,7 +19,6 @@ public class Word {
     private String ngrams;
     private String morphologyEndings;
     private String morphologyCategory;
-    private String language;
 
     @Valid
     private List<WordDefinition> definitions;
