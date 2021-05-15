@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -13,10 +14,14 @@ import java.util.List;
 public class WordDefinition {
 
     @NotBlank
+    @Size(max = 255)
     private String definition;
 
     @NotBlank
+    @Size(max = 255)
     private String example;
+
+    @Size(max = 50)
     private String stylisticMarker;
 
     /**

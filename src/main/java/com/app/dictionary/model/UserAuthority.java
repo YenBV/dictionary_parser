@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum UserAuthority implements GrantedAuthority {
-    CHANGE_PASSWORD, ALL;
+    CHANGE_PASSWORD, ALL, ROOT;
 
     @Override
     @JsonIgnore
