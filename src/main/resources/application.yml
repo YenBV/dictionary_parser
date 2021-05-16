@@ -14,7 +14,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      default-zone: http://${registry.host:localhost}:${registry.port:8761}/eureka
+      defaultZone: http://${registry.host:localhost}:${registry.port:8761}/eureka
   instance:
     lease-renewal-interval-in-seconds: 1
     lease-expiration-duration-in-seconds: 1

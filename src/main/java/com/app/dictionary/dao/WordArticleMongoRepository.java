@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,10 @@ public class WordArticleMongoRepository {
     }
 
     public WordArticleSearchResult findByWordStartWith(String wordPart, String collection, PageRequest pageRequest) {
+        if (!mongoTemplate.collectionExists(collection)) {
+            return new WordArticleSearchResult(Collections.emptyList(), 0);
+        }
+
         Query query = query(where("word.word").regex(format("^%s.*", wordPart), "i"));
         selectFieldsForSearch(query);
 
@@ -56,6 +61,10 @@ public class WordArticleMongoRepository {
     }
 
     public WordArticleSearchResult findByOtherLanguageWordsStartWith(String prefix, String collection, PageRequest pageRequest) {
+        if (!mongoTemplate.collectionExists(collection)) {
+            return new WordArticleSearchResult(Collections.emptyList(), 0);
+        }
+
         Query query = query(where("otherLanguageWords.word").regex(format("^%s.*", prefix), "i"));
         List<WordArticle> wordArticles = mongoTemplate.find(Query.of(query).with(pageRequest), WordArticle.class, collection);
         long count = mongoTemplate.count(query, collection);
@@ -63,6 +72,10 @@ public class WordArticleMongoRepository {
     }
 
     public WordArticleSearchResult findByWordPart(String wordPart, String collection, PageRequest pageRequest) {
+        if (!mongoTemplate.collectionExists(collection)) {
+            return new WordArticleSearchResult(Collections.emptyList(), 0);
+        }
+
         String wordForSearch = wordPart.toLowerCase();
 
         BasicQuery basicQuery = getSearchByWordQuery(wordForSearch);

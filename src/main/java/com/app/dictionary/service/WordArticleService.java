@@ -27,7 +27,7 @@ public interface WordArticleService {
 
     WordArticleSearchResult findByWordPart(WordArticleLanguages languages, String wordPart, int pageSize, int pageNumber);
 
-    Optional<WordArticleWithCloseWords> findByIdWithClearWords(String id, WordArticleLanguages articleLanguages);
+    Optional<WordArticleWithCloseWords> findByIdWithCloseWords(String id, WordArticleLanguages articleLanguages);
 
     Optional<UniqueWordResponse> findWordByExactMatch(String word, WordArticleLanguages wordArticleLanguages);
 }

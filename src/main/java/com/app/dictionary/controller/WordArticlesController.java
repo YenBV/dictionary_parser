@@ -31,6 +31,8 @@ import java.util.Optional;
 @RequestMapping("/{firstLanguage:^[a-z\\s]+$}/{secondLanguage:^[a-z\\s]+$}")
 public class WordArticlesController {
 
+    private static final int MIN_PAGE_SIZE = 10;
+    private static final int MAX_PAGE_SIZE = 100;
     private final WordArticleService wordArticleService;
 
     @PostMapping
@@ -47,7 +49,7 @@ public class WordArticlesController {
     @GetMapping("/{id}/with-close-words")
     Optional<WordArticleWithCloseWords> findByIdWithCloseWords(@PathVariable String firstLanguage, @PathVariable String secondLanguage,
                                                                @PathVariable String id) {
-        return wordArticleService.findByIdWithClearWords(id, new WordArticleLanguages(firstLanguage, secondLanguage));
+        return wordArticleService.findByIdWithCloseWords(id, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
 
     @PutMapping("/{id}")
@@ -66,6 +68,10 @@ public class WordArticlesController {
                                                    @RequestParam int pageSize,
                                                    @RequestParam int pageNumber,
                                                    @RequestParam(required = false) Boolean isSecondLanguage) {
+        if (pageSize < MIN_PAGE_SIZE || pageSize > MAX_PAGE_SIZE) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid page size number");
+        }
+
         if (Boolean.TRUE.equals(isSecondLanguage)) {
             return wordArticleService.findByOtherLanguageWordsStartWith(wordPrefix, new WordArticleLanguages(firstLanguage, secondLanguage), pageSize, pageNumber);
         }
@@ -79,6 +85,9 @@ public class WordArticlesController {
                                                @PathVariable String wordPart,
                                                @RequestParam int pageSize,
                                                @RequestParam int pageNumber) {
+        if (pageSize < MIN_PAGE_SIZE || pageSize > MAX_PAGE_SIZE) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid page size number");
+        }
 
         WordArticleLanguages languages = new WordArticleLanguages(firstLanguage, secondLanguage);
         return wordArticleService.findByWordPart(languages, wordPart, pageSize, pageNumber);

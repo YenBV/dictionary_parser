@@ -8,7 +8,6 @@ import com.app.dictionary.model.WordArticleSearchResult;
 import com.app.dictionary.model.WordArticleWithCloseWords;
 import com.app.dictionary.util.MongoCollectionUtils;
 import com.app.dictionary.util.WordUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +23,6 @@ import java.util.Optional;
 public class WordArticleServiceImpl implements WordArticleService {
 
     private final WordArticleMongoRepository wordArticleMongoRepository;
-    private final ObjectMapper mapper;
 
     @Override
     public void save(WordArticle wordArticle, WordArticleLanguages languages) {
@@ -64,7 +62,7 @@ public class WordArticleServiceImpl implements WordArticleService {
     }
 
     @Override
-    public Optional<WordArticleWithCloseWords> findByIdWithClearWords(String id, WordArticleLanguages articleLanguages) {
+    public Optional<WordArticleWithCloseWords> findByIdWithCloseWords(String id, WordArticleLanguages articleLanguages) {
         String collection = MongoCollectionUtils.toCollectionName(articleLanguages);
         return wordArticleMongoRepository.findByIdWithCloseWords(id, collection);
     }
