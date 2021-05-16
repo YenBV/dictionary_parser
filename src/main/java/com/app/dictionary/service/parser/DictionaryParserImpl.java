@@ -1,9 +1,8 @@
 package com.app.dictionary.service.parser;
 
-import com.app.dictionary.dao.WordArticleMongoRepository;
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
-import com.app.dictionary.util.MongoCollectionUtils;
+import com.app.dictionary.service.WordArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class DictionaryParserImpl implements DictionaryParser {
     private static final Pattern NEW_WORD_ARTICLE_DETERMINER = Pattern.compile("^(! )?(\\S+), (-?)([а-я]|[a-z]){1,4}(, [а-я]|[a-z])?(.*):$");
 
     private final WordParser wordParser;
-    private final WordArticleMongoRepository wordArticleMongoRepository;
+    private final WordArticleService wordArticleService;
 
     @Override
     public List<WordArticle> parse(String content, String firstLanguage, String secondLanguage) {
@@ -30,8 +29,7 @@ public class DictionaryParserImpl implements DictionaryParser {
         for (WordArticleParser wordArticleParser : wordArticleParsers) {
             WordArticle wordArticle = wordArticleParser.parse(wordParser);
             wordArticles.add(wordArticle);
-            String collection = MongoCollectionUtils.toCollectionName(new WordArticleLanguages(firstLanguage, secondLanguage));
-            wordArticleMongoRepository.save(wordArticle, collection);
+            wordArticleService.save(wordArticle, new WordArticleLanguages(firstLanguage, secondLanguage));
         }
         return wordArticles;
     }
