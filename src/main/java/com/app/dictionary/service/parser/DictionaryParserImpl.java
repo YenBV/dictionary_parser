@@ -1,7 +1,9 @@
 package com.app.dictionary.service.parser;
 
 import com.app.dictionary.dao.WordArticleMongoRepository;
+import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
+import com.app.dictionary.util.MongoCollectionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class DictionaryParserImpl implements DictionaryParser {
         for (WordArticleParser wordArticleParser : wordArticleParsers) {
             WordArticle wordArticle = wordArticleParser.parse(wordParser);
             wordArticles.add(wordArticle);
-            String collection = String.format("%s_%s_articles", firstLanguage, secondLanguage);
+            String collection = MongoCollectionUtils.toCollectionName(new WordArticleLanguages(firstLanguage, secondLanguage));
             wordArticleMongoRepository.save(wordArticle, collection);
         }
         return wordArticles;
