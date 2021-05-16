@@ -1,5 +1,6 @@
 package com.app.dictionary.service;
 
+import com.app.dictionary.dto.UniqueWordResponse;
 import com.app.dictionary.dto.WordArticleLanguages;
 import com.app.dictionary.model.WordArticle;
 import com.app.dictionary.model.WordArticleSearchResult;
@@ -27,4 +28,6 @@ public interface WordArticleService {
     WordArticleSearchResult findByWordPart(WordArticleLanguages languages, String wordPart, int pageSize, int pageNumber);
 
     Optional<WordArticleWithCloseWords> findByIdWithClearWords(String id, WordArticleLanguages articleLanguages);
+
+    Optional<UniqueWordResponse> findWordByExactMatch(String word, WordArticleLanguages wordArticleLanguages);
 }

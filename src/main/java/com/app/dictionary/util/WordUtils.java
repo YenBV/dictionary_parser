@@ -23,14 +23,15 @@ public class WordUtils {
     }
 
     public static String getNgramsForWord(String word) {
-        if (word.length() == 4) {
-            return toNgramString(ngram(2, word));
-        } else if (word.length() <= 10) {
-            return toNgramString(ngram(3, word));
-        } else if (word.length() <= 15) {
-            return toNgramString(ngram(4, word));
+        String processedWord = word.replaceAll("(?U)[^\\p{Alpha}]", "");
+        if (processedWord.length() == 4) {
+            return toNgramString(ngram(2, processedWord));
+        } else if (processedWord.length() <= 10) {
+            return toNgramString(ngram(3, processedWord));
+        } else if (processedWord.length() <= 15) {
+            return toNgramString(ngram(4, processedWord));
         } else {
-            return toNgramString(ngram(5, word));
+            return toNgramString(ngram(5, processedWord));
         }
     }
 

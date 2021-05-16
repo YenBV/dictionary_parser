@@ -28,7 +28,7 @@ public class WordArticleMongoRepository {
     private final MongoTemplate mongoTemplate;
 
     public WordArticle save(WordArticle multiLanguageWord, String collection) {
-        mongoTemplate.indexOps(collection).ensureIndex(new Index("word.word", Sort.Direction.ASC));
+        mongoTemplate.indexOps(collection).ensureIndex(new Index("word.word", Sort.Direction.ASC).unique());
         mongoTemplate.indexOps(collection).ensureIndex(new Index("otherLanguageWords.word", Sort.Direction.ASC));
 
         TextIndexDefinition textIndexDefinition = new TextIndexDefinition.TextIndexDefinitionBuilder()
@@ -108,5 +108,11 @@ public class WordArticleMongoRepository {
         WordArticleWithCloseWords word = new WordArticleWithCloseWords(leftWordAsArticle, wordArticle, rightWordAsArticle);
 
         return Optional.of(word);
+    }
+
+    public Optional<String> findWordByExactMatch(String word, String collectionName) {
+        Query query = query(where("word.word").regex(format("^%s$", word), "i"));
+        Optional<WordArticle> article = Optional.ofNullable(mongoTemplate.findOne(query, WordArticle.class, collectionName));
+        return article.map(it -> it.getWord().getWord());
     }
 }
