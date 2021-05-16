@@ -53,7 +53,7 @@ public class WordArticlesController {
     @PutMapping("/{id}")
     WordArticle update(@PathVariable String firstLanguage, @PathVariable String secondLanguage, @PathVariable String id, @RequestBody @Valid WordArticle wordArticle) {
         if (!StringUtils.equals(id, wordArticle.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id didn't match");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id doesn't match");
         }
         return wordArticleService.update(wordArticle, new WordArticleLanguages(firstLanguage, secondLanguage));
     }
